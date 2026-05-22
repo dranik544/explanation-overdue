@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvct2dejiu24o"]
+[gd_scene load_steps=7 format=3 uid="uid://bvct2dejiu24o"]
 
 [ext_resource type="Script" uid="uid://dw5rraibqs06t" path="res://scenes/player/player.gd" id="1_8afob"]
 
@@ -13,6 +13,15 @@ width = 24
 height = 32
 fill_from = Vector2(0, 1)
 
+[sub_resource type="Gradient" id="Gradient_dovo2"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gmlin"]
+gradient = SubResource("Gradient_dovo2")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_8afob")
 
@@ -21,3 +30,7 @@ shape = SubResource("CapsuleShape2D_x7p2l")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_dovo2")
+
+[node name="aimSprite" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_gmlin")
