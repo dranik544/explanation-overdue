@@ -34,7 +34,6 @@ func _physics_process(delta: float) -> void:
 	
 	# если касание для прицела активно, то срабатывает перемещение на позиции, иначе скрытие
 	if touchAimActive: aimSprite.position = touchAimDragOffset
-	else: aimSprite.visible = false
 	
 	# гравитация и проверка касания пола
 	if not is_on_floor():
@@ -78,11 +77,11 @@ func rightTouch(event: InputEvent):
 			touchAimActive = true
 			lastTouchAimPos = event.position
 			touchAimDragOffset = Vector2.ZERO
-			aimSprite.visible = true
+			aimFrontAnimationTween()
 		else:
 			touchAimActive = false
 			touchAimDragOffset = Vector2.ZERO
-			aimSprite.visible = false
+			aimBackAnimationTween()
 	elif event is InputEventScreenDrag and touchAimActive:
 		# так как я долбоёб, тут надо подробнее выписать:
 		# производим запоминание последнего места касания, ведь позже lastRightTouchPos будет изменён
@@ -97,3 +96,35 @@ func rightTouch(event: InputEvent):
 		# тут проверка, насколько далеко прицел от игрока. если далеко тооооооооо
 		if touchAimDragOffset.length() > maxDistanceAim:
 			touchAimDragOffset = touchAimDragOffset.normalized() * maxDistanceAim # мы хуярим его :)
+
+func aimBackAnimationTween():
+	aimSprite.modulate.a = 1.0 
+	
+	var tween: Tween = create_tween()
+	tween.set_parallel(true) 
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_CIRC)
+	
+	tween.tween_property(aimSprite, "position", Vector2.ZERO, 0.2)
+	tween.tween_property(aimSprite, "modulate:a", 0.0, 0.2)
+	
+	await tween.finished
+	if not touchAimActive:
+		aimSprite.visible = false
+
+func aimFrontAnimationTween():
+	aimSprite.visible = true
+	aimSprite.modulate.a = 0.0
+	aimSprite.scale = Vector2(4.0, 4.0)
+	
+	var tween: Tween = create_tween()
+	tween.set_parallel(true)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_BACK)
+	
+	tween.tween_property(aimSprite, "scale", Vector2(1.0, 1.0), 0.5)
+	tween.tween_property(aimSprite, "modulate:a", 1.0, 0.3)
+	
+	await tween.finished
+	if not touchAimActive:
+		aimSprite.visible = false
