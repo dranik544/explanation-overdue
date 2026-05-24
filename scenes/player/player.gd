@@ -1,29 +1,32 @@
 extends CharacterBody2D
 
 @onready var aimSprite: Sprite2D = $aimSprite
+@onready var weapon: Sprite2D = $weapon
 
-var touchMoveActive: bool = false       # срабатывает, когда касание части экрана для ходьбы активно
-var touchMoveStartX: float = 0.0        # расчёт начальной точки касания
-var touchMoveDragOffsetX: float = 0.0   # финальный расчёт движения
+var touchMoveActive: bool = false                 # срабатывает, когда касание части экрана для ходьбы активно
+var touchMoveStart: Vector2 = Vector2.ZERO        # расчёт начальной точки касания
+var touchMoveDragOffset: Vector2 = Vector2.ZERO   # финальный расчёт конечной точки движения
 
-var touchAimActive: bool = false                 # срабатывает, когда касание части экрана для прицеливания активно
-var touchAimStart: Vector2 = Vector2.ZERO        # расчёт начальной точки касания
-var touchAimDragOffset: Vector2 = Vector2.ZERO   # финальный расчёт расположения прицела
-var lastTouchAimPos: Vector2 = Vector2.ZERO      # последнее касание части экрана для прицеливания
+var touchAimActive: bool = false                  # срабатывает, когда касание части экрана для прицеливания активно
+var touchAimStart: Vector2 = Vector2.ZERO         # расчёт начальной точки касания
+var touchAimDragOffset: Vector2 = Vector2.ZERO    # финальный расчёт расположения прицела
+var lastTouchAimPos: Vector2 = Vector2.ZERO       # последнее касание части экрана для прицеливания
 
-@export var maxSpeedMove: float = 300.0              # максимальная скорость передвижения игрока
-@export var accelerationMove: float = 20.0           # плавность начала ходьбы
-@export var deaccelerationMove: float = 40.0         # плавность конца ходьбы
-@export var enableMaxDistanceAim: bool = true        # включить ограничения прицела по растоянию
-@export var maxDistanceAim: float = 75.0             # ограничения прицела по растоянию
+@export var maxSpeedMove: float = 300.0           # максимальная скорость передвижения игрока
+@export var jumpVelocity: float = -450.0          # сила прыжка (отрицательная — вверх)
+@export var accelerationMove: float = 20.0        # плавность начала ходьбы
+@export var deaccelerationMove: float = 40.0      # плавность конца ходьбы
+@export var enableMaxDistanceAim: bool = true     # включить ограничения прицела по растоянию
+@export var maxDistanceAim: float = 75.0          # ограничения прицела по растоянию
 
 
 func _ready() -> void:
+	add_to_group("player")
 	aimSprite.visible = false
 
 func _physics_process(delta: float) -> void:
 	# расчёт силы ходьбы и плавности
-	var targetVelocityX: float = clampf(touchMoveDragOffsetX, -maxSpeedMove, maxSpeedMove) if touchMoveActive else 0.0
+	var targetVelocityX: float = clampf(touchMoveDragOffset.x, -maxSpeedMove, maxSpeedMove) if touchMoveActive else 0.0
 	var accelMove: float = accelerationMove if targetVelocityX != 0.0 else deaccelerationMove
 	
 	# плавное движение игрока
@@ -53,21 +56,27 @@ func leftTouch(event: InputEvent):
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			touchMoveActive = true
-			touchMoveStartX = event.position.x
-			touchMoveDragOffsetX = 0.0
+			touchMoveStart = event.position
+			touchMoveDragOffset = Vector2.ZERO
 		else:
+			# если игрок сделал свайп вверх и он на полу, то можно ебануть вверх
+			if touchMoveStart.y - event.position.y > 50.0 and is_on_floor():
+				velocity.y = jumpVelocity
+			
 			touchMoveActive = false
-			touchMoveDragOffsetX = 0.0
+			touchMoveDragOffset = Vector2.ZERO
 	elif event is InputEventScreenDrag and touchMoveActive:
-		touchMoveDragOffsetX = (event.position.x - touchMoveStartX) * Global.sensivityMove
-
-var lastRightTouchPos: Vector2 = Vector2.ZERO
+		touchMoveDragOffset.x = (event.position.x - touchMoveStart.x) * Global.sensivityMove
+		
+		if touchMoveStart.y - event.position.y > 80.0 and is_on_floor():
+			velocity.y = jumpVelocity
+			touchMoveStart.y = event.position.y
 
 func rightTouch(event: InputEvent):
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			touchAimActive = true
-			lastRightTouchPos = event.position
+			lastTouchAimPos = event.position
 			touchAimDragOffset = Vector2.ZERO
 			aimSprite.visible = true
 		else:
@@ -77,11 +86,13 @@ func rightTouch(event: InputEvent):
 	elif event is InputEventScreenDrag and touchAimActive:
 		# так как я долбоёб, тут надо подробнее выписать:
 		# производим запоминание последнего места касания, ведь позже lastRightTouchPos будет изменён
-		var lastTouch: Vector2 = event.position - lastRightTouchPos
-		lastRightTouchPos = event.position                            # <- вот он меняется
+		var lastTouch: Vector2 = event.position - lastTouchAimPos
+		lastTouchAimPos = event.position                            # <- вот он меняется
 		
 		# теперь двигаем прицел в нужное место
 		touchAimDragOffset += lastTouch * Global.sensivityAim
+		# поворот оружия в сторону прицела
+		weapon.rotation = touchAimDragOffset.angle()
 		
 		# тут проверка, насколько далеко прицел от игрока. если далеко тооооооооо
 		if touchAimDragOffset.length() > maxDistanceAim:

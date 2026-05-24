@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1bx0qxb3npc3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1qius"]
+radius = 8.0
+
+[sub_resource type="Gradient" id="Gradient_1qius"]
+offsets = PackedFloat32Array(0, 0.508547, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xbdbr"]
+gradient = SubResource("Gradient_1qius")
+width = 15
+height = 15
+
+[node name="blaster projectile1" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1qius")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_xbdbr")

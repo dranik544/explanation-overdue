@@ -13,6 +13,7 @@ size = Vector2(578, 20)
 zoom = Vector2(2, 2)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, -27)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(0, 162)
