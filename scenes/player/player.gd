@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var aimSprite: Sprite2D = $aimSprite
 @onready var weapon: Sprite2D = $weapon
+@onready var projectileTimer: Timer = $projectileTimer
 
 var touchMoveActive: bool = false                 # срабатывает, когда касание части экрана для ходьбы активно
 var touchMoveStart: Vector2 = Vector2.ZERO        # расчёт начальной точки касания
@@ -18,10 +19,14 @@ var lastTouchAimPos: Vector2 = Vector2.ZERO       # последнее каса�
 @export var deaccelerationMove: float = 40.0      # плавность конца ходьбы
 @export var enableMaxDistanceAim: bool = true     # включить ограничения прицела по растоянию
 @export var maxDistanceAim: float = 75.0          # ограничения прицела по растоянию
+@export var pool: Node2D                          # внешний пул проджектайлов
 
 
 func _ready() -> void:
 	add_to_group("player")
+	
+	projectileTimer.timeout.connect(projectileTimerTimeout)
+	
 	aimSprite.visible = false
 
 func _physics_process(delta: float) -> void:
@@ -96,12 +101,26 @@ func rightTouch(event: InputEvent):
 		# тут проверка, насколько далеко прицел от игрока. если далеко тооооооооо
 		if touchAimDragOffset.length() > maxDistanceAim:
 			touchAimDragOffset = touchAimDragOffset.normalized() * maxDistanceAim # мы хуярим его :)
+		
+		shoot()
+
+func shoot():
+	if !projectileTimer.is_stopped(): return
+	if !touchAimActive or touchAimDragOffset.length() <= maxDistanceAim / 10: return
+	
+	var projectile: Area2D = pool.getProjectile()
+	projectile.activate(global_position, touchAimDragOffset.normalized())
+	
+	projectileTimer.start()
+
+func projectileTimerTimeout():
+	pass
 
 func aimBackAnimationTween():
 	aimSprite.modulate.a = 1.0 
 	
 	var tween: Tween = create_tween()
-	tween.set_parallel(true) 
+	tween.set_parallel(true)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_CIRC)
 	

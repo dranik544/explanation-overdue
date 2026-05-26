@@ -44,3 +44,7 @@ offset = Vector2(8, 0)
 
 [node name="aimSprite" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_gmlin")
+
+[node name="projectileTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
