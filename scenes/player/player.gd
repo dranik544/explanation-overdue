@@ -25,8 +25,6 @@ var lastTouchAimPos: Vector2 = Vector2.ZERO       # последнее каса�
 func _ready() -> void:
 	add_to_group("player")
 	
-	projectileTimer.timeout.connect(projectileTimerTimeout)
-	
 	aimSprite.visible = false
 
 func _physics_process(delta: float) -> void:
@@ -38,7 +36,9 @@ func _physics_process(delta: float) -> void:
 	velocity.x = move_toward(velocity.x, targetVelocityX, accelMove)
 	
 	# если касание для прицела активно, то срабатывает перемещение на позиции, иначе скрытие
-	if touchAimActive: aimSprite.position = touchAimDragOffset
+	if touchAimActive:
+		aimSprite.position = touchAimDragOffset
+		shoot()
 	
 	# гравитация и проверка касания пола
 	if not is_on_floor():
@@ -101,20 +101,22 @@ func rightTouch(event: InputEvent):
 		# тут проверка, насколько далеко прицел от игрока. если далеко тооооооооо
 		if touchAimDragOffset.length() > maxDistanceAim:
 			touchAimDragOffset = touchAimDragOffset.normalized() * maxDistanceAim # мы хуярим его :)
-		
-		shoot()
 
+# выстрел
 func shoot():
+	# если таймер ещё не закончил, то возвращаемся обратно
 	if !projectileTimer.is_stopped(): return
 	if !touchAimActive or touchAimDragOffset.length() <= maxDistanceAim / 10: return
 	
+	# создаём и активируем проджектайл
 	var projectile: Area2D = pool.getProjectile()
 	projectile.activate(global_position, touchAimDragOffset.normalized())
 	
+	# отдача игрока от проджектайла
+	velocity -= touchAimDragOffset.normalized() * projectile.recoilForce
+	
+	# стартуем таймер, дабы избежать спама проджектайлами
 	projectileTimer.start()
-
-func projectileTimerTimeout():
-	pass
 
 func aimBackAnimationTween():
 	aimSprite.modulate.a = 1.0 
