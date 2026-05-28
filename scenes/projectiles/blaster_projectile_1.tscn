@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bpl2ynbmp8203" path="res://scenes/projectiles/blaster_projectile_1.gd" id="1_xbdbr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1qius"]
-radius = 8.0
+radius = 6.0
 
 [sub_resource type="Gradient" id="Gradient_1qius"]
 offsets = PackedFloat32Array(0, 0.508547, 1)
@@ -11,8 +11,8 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xbdbr"]
 gradient = SubResource("Gradient_1qius")
-width = 15
-height = 15
+width = 12
+height = 12
 
 [node name="blaster projectile1" type="Area2D"]
 script = ExtResource("1_xbdbr")

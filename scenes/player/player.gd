@@ -112,6 +112,9 @@ func shoot():
 	var projectile: Area2D = pool.getProjectile()
 	projectile.activate(global_position, touchAimDragOffset.normalized())
 	
+	# НЕАКТИВНО # отдача игрока от проджектайла, ТОЛЬКО если он в воздухе
+	# if !is_on_floor(): velocity -= touchAimDragOffset.normalized() * projectile.recoilForce
+	
 	# отдача игрока от проджектайла
 	velocity -= touchAimDragOffset.normalized() * projectile.recoilForce
 	

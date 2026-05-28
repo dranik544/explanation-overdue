@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://sq62i7vh4s13"]
+[gd_scene load_steps=7 format=3 uid="uid://sq62i7vh4s13"]
 
 [ext_resource type="PackedScene" uid="uid://bvct2dejiu24o" path="res://scenes/player/player.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://bonvgsowq51qj" path="res://scenes/projectile_pool.gd" id="2_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://b1bx0qxb3npc3" path="res://scenes/projectiles/blaster_projectile_1.tscn" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://cvyfkpds5lg44" path="res://scenes/blocks/block_1.tscn" id="4_jyhfs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o5qli"]
 size = Vector2(578, 20)
@@ -13,7 +14,7 @@ size = Vector2(20, 378)
 [node name="main" type="Node2D"]
 
 [node name="ProjectilePool" type="Node2D" parent="."]
-position = Vector2(-1, 0)
+position = Vector2(-999, -999)
 script = ExtResource("2_0wfyh")
 projectileScene = ExtResource("3_sugp2")
 
@@ -40,3 +41,6 @@ shape = SubResource("RectangleShape2D_sugp2")
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="collisions"]
 position = Vector2(240, 0)
 shape = SubResource("RectangleShape2D_sugp2")
+
+[node name="block1" parent="." instance=ExtResource("4_jyhfs")]
+position = Vector2(160, 101)
