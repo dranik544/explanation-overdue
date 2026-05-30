@@ -30,6 +30,13 @@ window/stretch/aspect="expand"
 
 pointing/emulate_touch_from_mouse=true
 
+[layer_names]
+
+2d_physics/layer_1="Environment"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Blocks"
+2d_physics/layer_4="Projectiles"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
