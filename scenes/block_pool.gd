@@ -10,7 +10,6 @@ func _ready():
 	pool = get_children()
 	for i in pool:
 		i.visible = false
-		print(i)
 	
 	# запускаем спавн
 	scheduleNextSpawn()
@@ -26,7 +25,6 @@ func spawnBlock():
 	pool.shuffle()
 	for i in pool:
 		if not i.visible:
-			print("spawn block")
 			# ставим за экраном
 			i.position = Vector2(
 				get_viewport_rect().size.x + 100,
