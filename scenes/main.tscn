@@ -105,6 +105,22 @@ position = Vector2(48, -40)
 [node name="block3" parent="BlockPool/blocksGroup5" instance=ExtResource("5_tefeu")]
 position = Vector2(0, -40)
 
+[node name="blocksGroup6" type="Node2D" parent="BlockPool"]
+position = Vector2(448, -320)
+script = ExtResource("4_tbgi4")
+
+[node name="block1" parent="BlockPool/blocksGroup6" instance=ExtResource("5_tefeu")]
+position = Vector2(0, 56)
+
+[node name="block2" parent="BlockPool/blocksGroup6" instance=ExtResource("5_tefeu")]
+position = Vector2(48, -88)
+
+[node name="block3" parent="BlockPool/blocksGroup6" instance=ExtResource("5_tefeu")]
+position = Vector2(0, -88)
+
+[node name="block4" parent="BlockPool/blocksGroup6" instance=ExtResource("5_tefeu")]
+position = Vector2(104, 56)
+
 [node name="player" parent="." node_paths=PackedStringArray("pool") instance=ExtResource("1_o5qli")]
 position = Vector2(-160, 104)
 pool = NodePath("../ProjectilePool")

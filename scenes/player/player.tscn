@@ -1,17 +1,24 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvct2dejiu24o"]
+[gd_scene load_steps=10 format=3 uid="uid://bvct2dejiu24o"]
 
 [ext_resource type="Script" uid="uid://dw5rraibqs06t" path="res://scenes/player/player.gd" id="1_8afob"]
+[ext_resource type="Texture2D" uid="uid://depid3vanlm27" path="res://sprites/player/playerIdle2.png" id="2_gmlin"]
+[ext_resource type="Texture2D" uid="uid://6l11qovp2lyv" path="res://sprites/player/playerIdle1.png" id="3_lvxji"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x7p2l"]
 
-[sub_resource type="Gradient" id="Gradient_8afob"]
-colors = PackedColorArray(0.736532, 0.422897, 7.70092e-07, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_dovo2"]
-gradient = SubResource("Gradient_8afob")
-width = 24
-height = 32
-fill_from = Vector2(0, 1)
+[sub_resource type="SpriteFrames" id="SpriteFrames_p47bc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_gmlin")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_lvxji")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 3.0
+}]
 
 [sub_resource type="Gradient" id="Gradient_gmlin"]
 
@@ -37,8 +44,11 @@ script = ExtResource("1_8afob")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_x7p2l")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("GradientTexture2D_dovo2")
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_p47bc")
+animation = &"idle"
+autoplay = "idle"
 
 [node name="weapon" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_lvxji")
