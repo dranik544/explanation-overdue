@@ -1,10 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://bvct2dejiu24o"]
+[gd_scene load_steps=9 format=3 uid="uid://bvct2dejiu24o"]
 
 [ext_resource type="Script" uid="uid://dw5rraibqs06t" path="res://scenes/player/player.gd" id="1_8afob"]
 [ext_resource type="Texture2D" uid="uid://depid3vanlm27" path="res://sprites/player/playerIdle2.png" id="2_gmlin"]
 [ext_resource type="Texture2D" uid="uid://6l11qovp2lyv" path="res://sprites/player/playerIdle1.png" id="3_lvxji"]
+[ext_resource type="Texture2D" uid="uid://c2ixsnr8hgs0" path="res://sprites/player/aimSprite2.png" id="4_lvxji"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x7p2l"]
+radius = 8.0
+height = 38.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_p47bc"]
 animations = [{
@@ -25,16 +28,7 @@ animations = [{
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_lvxji"]
 gradient = SubResource("Gradient_gmlin")
 width = 24
-height = 12
-
-[sub_resource type="Gradient" id="Gradient_dovo2"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_gmlin"]
-gradient = SubResource("Gradient_dovo2")
-width = 16
-height = 16
-fill = 1
-fill_from = Vector2(0.5, 0.5)
+height = 8
 
 [node name="player" type="CharacterBody2D"]
 collision_layer = 2
@@ -45,17 +39,18 @@ script = ExtResource("1_8afob")
 shape = SubResource("CapsuleShape2D_x7p2l")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.1, 0.1)
+scale = Vector2(0.12, 0.12)
 sprite_frames = SubResource("SpriteFrames_p47bc")
 animation = &"idle"
 autoplay = "idle"
 
 [node name="weapon" type="Sprite2D" parent="."]
+position = Vector2(-5, 6)
 texture = SubResource("GradientTexture2D_lvxji")
 offset = Vector2(8, 0)
 
 [node name="aimSprite" type="Sprite2D" parent="."]
-texture = SubResource("GradientTexture2D_gmlin")
+texture = ExtResource("4_lvxji")
 
 [node name="projectileTimer" type="Timer" parent="."]
 wait_time = 0.1

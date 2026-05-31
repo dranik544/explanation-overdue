@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://sq62i7vh4s13"]
+[gd_scene load_steps=12 format=3 uid="uid://sq62i7vh4s13"]
 
 [ext_resource type="PackedScene" uid="uid://bvct2dejiu24o" path="res://scenes/player/player.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://bonvgsowq51qj" path="res://scenes/projectile_pool.gd" id="2_0wfyh"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b1bx0qxb3npc3" path="res://scenes/projectiles/blaster_projectile_1.tscn" id="3_sugp2"]
 [ext_resource type="Script" uid="uid://dqyye751aqmdb" path="res://scenes/blocks_group_1.gd" id="4_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://cvyfkpds5lg44" path="res://scenes/blocks/block_1.tscn" id="5_tefeu"]
+[ext_resource type="Script" uid="uid://dki2kd1fhhfo" path="res://scenes/camera_2d.gd" id="7_o6xl0"]
 
 [sub_resource type="Gradient" id="Gradient_sugp2"]
 colors = PackedColorArray(2.09369e-06, 0.516062, 9.62615e-08, 1, 1.67254e-06, 0.395666, 4.81308e-08, 1)
@@ -54,6 +55,7 @@ shape = SubResource("RectangleShape2D_sugp2")
 position = Vector2(-999, -999)
 script = ExtResource("2_0wfyh")
 projectileScene = ExtResource("3_sugp2")
+poolSize = 10
 
 [node name="BlockPool" type="Node2D" parent="."]
 position = Vector2(0, -7)
@@ -126,4 +128,6 @@ position = Vector2(-160, 104)
 pool = NodePath("../ProjectilePool")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+ignore_rotation = false
 zoom = Vector2(2, 2)
+script = ExtResource("7_o6xl0")

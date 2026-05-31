@@ -24,6 +24,7 @@ var lastAimGamepadActive: bool = false            # для анимации пр
 @export var enableMaxDistanceAim: bool = true     # включить ограничения прицела по растоянию
 @export var maxDistanceAim: float = 75.0          # ограничения прицела по растоянию
 @export var pool: Node2D                          # внешний пул проджектайлов
+@export var camera: Camera2D                      # камера
 
 
 func _ready() -> void:
@@ -179,6 +180,9 @@ func shoot():
 	projectile.activate(global_position, direction)
 	velocity -= direction * projectile.recoilForce
 	projectileTimer.start()
+	
+	if camera == null: camera = get_tree().get_first_node_in_group("camera")
+	if camera and camera.has_method("applyShake"): camera.applyShake(projectile.recoilForce * 0.01, 0.05)
 
 func aimBackAnimationTween():
 	aimSprite.modulate.a = 1.0 

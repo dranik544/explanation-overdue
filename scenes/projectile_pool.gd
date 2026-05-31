@@ -33,6 +33,7 @@ func getProjectile() -> Node2D:
 	
 	pool.append(newProjectile)
 	
+	print("new created")
 	return newProjectile
 
 # возвращение проджектайла обратно в пул
