@@ -5,7 +5,7 @@ enum InputMode {
 	KEYBOARD_MOUSE,
 	GAMEPAD
 }
-var currentMode: InputMode = InputMode.TOUCH
+var currentMode = InputMode.TOUCH
 
 
 func _input(event):
@@ -22,5 +22,5 @@ func _input(event):
 		currentMode = InputMode.GAMEPAD
 		#print("gamepad mode")
 
-func getMode() -> InputMode:
+func getMode():
 	return currentMode

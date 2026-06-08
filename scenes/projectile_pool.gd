@@ -2,8 +2,8 @@ extends Node2D
 
 var pool: Array = []                       # список проджектайлов
 
-@export var projectileScene: PackedScene   # сцена проджектайла
-@export var poolSize: int = 15             # кол-во заготовленных проджектайлов
+export(PackedScene) var projectileScene   # сцена проджектайла
+export(int) var poolSize = 15             # кол-во заготовленных проджектайлов
 
 
 func _ready():

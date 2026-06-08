@@ -1,9 +1,13 @@
-extends CharacterBody2D
+extends KinematicBody2D
 
-@onready var aimSprite: Sprite2D = $aimSprite
-@onready var weapon: Sprite2D = $weapon
-@onready var projectileTimer: Timer = $projectileTimer
+onready var aimSprite: Sprite = $aimSprite
+onready var weapon: Sprite = $weapon
+onready var projectileTimer: Timer = $projectileTimer
 
+var velocity: Vector2 = Vector2.ZERO              # просто velocity
+var gravity: float = ProjectSettings.get_setting(
+	"physics/2d/default_gravity"                  # гравитация (берётся из настроек)
+)
 var touchMoveActive: bool = false                 # срабатывает, когда касание части экрана для ходьбы активно
 var touchMoveStart: Vector2 = Vector2.ZERO        # расчёт начальной точки касания
 var touchMoveDragOffset: Vector2 = Vector2.ZERO   # финальный расчёт конечной точки движения
@@ -17,14 +21,16 @@ var moveDirection: Vector2 = Vector2.ZERO         # направление хо�
 var aimPosition: Vector2 = Vector2.ZERO           # позиция прицела (ПК)
 var lastAimGamepadActive: bool = false            # для анимации прицела (ГЕЙМПАД)
 
-@export var maxSpeedMove: float = 300.0           # максимальная скорость передвижения игрока
-@export var jumpVelocity: float = -450.0          # сила прыжка (отрицательная — вверх)
-@export var accelerationMove: float = 30.0        # плавность начала ходьбы
-@export var deaccelerationMove: float = 60.0      # плавность конца ходьбы
-@export var enableMaxDistanceAim: bool = true     # включить ограничения прицела по растоянию
-@export var maxDistanceAim: float = 75.0          # ограничения прицела по растоянию
-@export var pool: Node2D                          # внешний пул проджектайлов
-@export var camera: Camera2D                      # камера
+export(float) var maxSpeedMove = 300.0            # максимальная скорость передвижения игрока
+export(float) var jumpVelocity = -450.0           # сила прыжка (отрицательная — вверх)
+export(float) var accelerationMove = 30.0         # плавность начала ходьбы
+export(float) var deaccelerationMove = 60.0       # плавность конца ходьбы
+export(bool) var enableMaxDistanceAim = true      # включить ограничения прицела по растоянию
+export(float) var maxDistanceAim = 75.0           # ограничения прицела по растоянию                     
+export(NodePath) var poolPath                                                 # ПУТЬ К внешний пул проджектайлов
+onready var pool: Node2D = get_node(poolPath) if poolPath else null           # внешний пул проджектайлов
+export(NodePath) var cameraPath                                               # ПУТЬ К камера
+onready var camera: Camera2D = get_node(cameraPath) if cameraPath else null   # камера
 
 
 func _ready() -> void:
@@ -36,16 +42,16 @@ func _physics_process(delta: float) -> void:
 	InputManagement()
 	
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		velocity.y += gravity * delta
 	
-	move_and_slide()
+	move_and_slide(velocity)
 
 func InputManagement():
 	# заготовка для нужного Velocity по X оси
 	var targetVelocityX: float = 0.0
 	if InputManager.getMode() == InputManager.InputMode.TOUCH:
 		# если тачмод:
-		targetVelocityX = clampf(touchMoveDragOffset.x, -maxSpeedMove, maxSpeedMove) if touchMoveActive else 0.0
+		targetVelocityX = clamp(touchMoveDragOffset.x, -maxSpeedMove, maxSpeedMove) if touchMoveActive else 0.0
 	else:
 		# если клавамышь или геймпад:
 		moveDirection = Input.get_vector("LEFT", "RIGHT", "ui_up", "ui_down")
@@ -187,7 +193,7 @@ func shoot():
 func aimBackAnimationTween():
 	aimSprite.modulate.a = 1.0 
 	
-	var tween: Tween = create_tween()
+	var tween: Tween = Tween.new()
 	tween.set_parallel(true)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_CIRC)
@@ -195,7 +201,7 @@ func aimBackAnimationTween():
 	tween.tween_property(aimSprite, "position", Vector2.ZERO, 0.2)
 	tween.tween_property(aimSprite, "modulate:a", 0.0, 0.2)
 	
-	await tween.finished
+	yield(tween, "finished")
 	if not touchAimActive:
 		aimSprite.visible = false
 
@@ -204,7 +210,7 @@ func aimFrontAnimationTween():
 	aimSprite.modulate.a = 0.0
 	aimSprite.scale = Vector2(4.0, 4.0)
 	
-	var tween: Tween = create_tween()
+	var tween: Tween = Tween.new()
 	tween.set_parallel(true)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_BACK)
@@ -212,6 +218,6 @@ func aimFrontAnimationTween():
 	tween.tween_property(aimSprite, "scale", Vector2(1.0, 1.0), 0.5)
 	tween.tween_property(aimSprite, "modulate:a", 1.0, 0.3)
 	
-	await tween.finished
+	yield(tween, "finished")
 	if not touchAimActive:
 		aimSprite.visible = false

@@ -1,7 +1,7 @@
 extends Camera2D
 
-var shakeIntensity := 0.0   # сила тряски
-var shakeTime := 0.0        # время тряски
+var shakeIntensity: float = 0.0   # сила тряски
+var shakeTime: float = 0.0        # время тряски
 
 
 func _ready() -> void:
@@ -18,10 +18,10 @@ func _process(delta: float) -> void:
 		# убавляем время и трясём экран
 		shakeTime -= delta
 		offset = Vector2(
-			randf_range(-shakeIntensity, shakeIntensity),
-			randf_range(-shakeIntensity, shakeIntensity)
+			rand_range(-shakeIntensity, shakeIntensity),
+			rand_range(-shakeIntensity, shakeIntensity)
 		)
-		rotation = randf_range(-shakeIntensity, shakeIntensity) * 0.01
+		rotation = rand_range(-shakeIntensity, shakeIntensity) * 0.01
 		# если время закончилось, то возвращаем оффсет
 		if shakeTime <= 0:
 			offset = Vector2.ZERO

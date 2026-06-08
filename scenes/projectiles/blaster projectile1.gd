@@ -1,19 +1,22 @@
 extends Area2D
 
-@onready var sprite2d: Sprite2D = $Sprite2D
+onready var sprite2d: Sprite = $Sprite
 
-@export var speed: float = 500.0                # скорость проджектайла
-@export var direction: Vector2 = Vector2.ZERO   # направление проджектайла
-@export var pool: Node2D                        # объект пула, где находятся заготовки проджектайлов
-@export var recoilForce: float = 95.0           # сила отдачи игрока от проджектайла, в случае касания с объектом
-@export var damage: int = 1                     # урон по блокам и противникам
-@export var camera: Camera2D                    # камера
+export var speed: float = 500.0                # скорость проджектайла
+export var direction: Vector2 = Vector2.ZERO   # направление проджектайла
+export var recoilForce: float = 95.0           # сила отдачи игрока от проджектайла, в случае касания с объектом
+export var damage: int = 1                     # урон по блокам и противникам
+export(NodePath) var poolPath                                                 # ПУТЬ К внешний пул проджектайлов
+onready var pool: Node2D = get_node(poolPath) if poolPath else null           # внешний пул проджектайлов
+export(NodePath) var cameraPath                                               # ПУТЬ К камера
+onready var camera: Camera2D = get_node(cameraPath) if cameraPath else null   # камера
+
 
 var baseScaleSprite: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
-	body_entered.connect(_on_body_entered)
+	connect("body_entered", self, "_on_body_entered")
 	baseScaleSprite = sprite2d.scale
 
 func _physics_process(delta):
@@ -46,13 +49,13 @@ func _on_body_entered(body: Node2D):
 	if camera and camera.has_method("applyShake"): camera.applyShake(recoilForce * 0.01, 0.2)
 	
 	# анимация уничтожения
-	var tween: Tween = create_tween()
+	var tween: Tween = Tween.new()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_CIRC)
 	tween.set_parallel(true)
 	tween.tween_property(sprite2d, "scale", baseScaleSprite * 2, 0.2)
 	tween.tween_property(sprite2d, "modulate:a", 0.0, 0.2)
-	await tween.finished
+	yield(tween, "finished")
 	
 	# возвращение обратно в пул
 	pool.returnProjectile(self)
