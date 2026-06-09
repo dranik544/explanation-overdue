@@ -1,3 +1,129 @@
-[gd_scene format=2]
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/projectile_pool.gd" type="Script" id=2]
+[ext_resource path="res://scenes/block_pool.gd" type="Script" id=3]
+[ext_resource path="res://scenes/projectiles/blaster projectile1.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/blocks_group_1.gd" type="Script" id=5]
+[ext_resource path="res://scenes/blocks/block_1.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/camera_2d.gd" type="Script" id=7]
+
+[sub_resource type="Gradient" id=1]
+colors = PoolColorArray( 2.09369e-06, 0.516062, 9.62615e-08, 1, 1.67254e-06, 0.395666, 4.81308e-08, 1 )
+
+[sub_resource type="GradientTexture2D" id=2]
+gradient = SubResource( 1 )
+width = 580
+height = 40
+fill = 1
+
+[sub_resource type="RectangleShape2D" id=3]
+
+[sub_resource type="RectangleShape2D" id=4]
 
 [node name="main" type="Node2D"]
+
+[node name="visual" type="Node2D" parent="."]
+position = Vector2( 0, 8 )
+
+[node name="floor" type="Sprite" parent="visual"]
+position = Vector2( 0, 125 )
+texture = SubResource( 2 )
+
+[node name="collisions" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="collisions"]
+position = Vector2( 0, 131 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="collisions"]
+position = Vector2( 0, -135 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="collisions"]
+position = Vector2( -240, 0 )
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="collisions"]
+position = Vector2( 240, 0 )
+shape = SubResource( 4 )
+
+[node name="ProjectilePool" type="Node2D" parent="."]
+position = Vector2( -999, -999 )
+script = ExtResource( 2 )
+projectileScene = ExtResource( 4 )
+poolSize = 10
+
+[node name="BlockPool" type="Node2D" parent="."]
+position = Vector2( 0, -7 )
+script = ExtResource( 3 )
+
+[node name="blocksGroup1" type="Node2D" parent="BlockPool"]
+position = Vector2( -80, -320 )
+script = ExtResource( 5 )
+
+[node name="block1" parent="BlockPool/blocksGroup1" instance=ExtResource( 6 )]
+position = Vector2( 0, 104 )
+
+[node name="blocksGroup2" type="Node2D" parent="BlockPool"]
+position = Vector2( 0, -320 )
+script = ExtResource( 5 )
+
+[node name="block1" parent="BlockPool/blocksGroup2" instance=ExtResource( 6 )]
+
+[node name="blocksGroup3" type="Node2D" parent="BlockPool"]
+position = Vector2( 80, -320 )
+script = ExtResource( 5 )
+
+[node name="block1" parent="BlockPool/blocksGroup3" instance=ExtResource( 6 )]
+position = Vector2( 0, -104 )
+
+[node name="blocksGroup4" type="Node2D" parent="BlockPool"]
+position = Vector2( 160, -320 )
+script = ExtResource( 5 )
+
+[node name="block1" parent="BlockPool/blocksGroup4" instance=ExtResource( 6 )]
+position = Vector2( 0, 104 )
+
+[node name="block2" parent="BlockPool/blocksGroup4" instance=ExtResource( 6 )]
+position = Vector2( 0, 56 )
+
+[node name="block3" parent="BlockPool/blocksGroup4" instance=ExtResource( 6 )]
+position = Vector2( 48, 104 )
+
+[node name="blocksGroup5" type="Node2D" parent="BlockPool"]
+position = Vector2( 296, -320 )
+script = ExtResource( 5 )
+
+[node name="block1" parent="BlockPool/blocksGroup5" instance=ExtResource( 6 )]
+position = Vector2( 0, 8 )
+
+[node name="block2" parent="BlockPool/blocksGroup5" instance=ExtResource( 6 )]
+position = Vector2( 48, -40 )
+
+[node name="block3" parent="BlockPool/blocksGroup5" instance=ExtResource( 6 )]
+position = Vector2( 0, -40 )
+
+[node name="blocksGroup6" type="Node2D" parent="BlockPool"]
+position = Vector2( 448, -320 )
+script = ExtResource( 5 )
+
+[node name="block1" parent="BlockPool/blocksGroup6" instance=ExtResource( 6 )]
+position = Vector2( 0, 56 )
+
+[node name="block2" parent="BlockPool/blocksGroup6" instance=ExtResource( 6 )]
+position = Vector2( 48, -88 )
+
+[node name="block3" parent="BlockPool/blocksGroup6" instance=ExtResource( 6 )]
+position = Vector2( 0, -88 )
+
+[node name="block4" parent="BlockPool/blocksGroup6" instance=ExtResource( 6 )]
+position = Vector2( 104, 56 )
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+position = Vector2( -160, 104 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2( 2, 2 )
+script = ExtResource( 7 )
