@@ -3,12 +3,15 @@
 [ext_resource path="res://scenes/blocks/block_1.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 24, 24 )
 
 [sub_resource type="Gradient" id=2]
 colors = PoolColorArray( 0, 0, 0, 1, 0, 1, 0, 1 )
 
 [sub_resource type="GradientTexture2D" id=3]
 gradient = SubResource( 2 )
+width = 48
+height = 48
 fill_to = Vector2( 1, 1 )
 
 [node name="block1" type="StaticBody2D"]
@@ -20,6 +23,4 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 9.53674e-07, 0.5 )
-scale = Vector2( 0.3125, 0.328125 )
 texture = SubResource( 3 )

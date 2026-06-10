@@ -4,7 +4,7 @@ onready var sprite2d: Sprite = $Sprite
 
 export var speed: float = 500.0                # скорость проджектайла
 export var direction: Vector2 = Vector2.ZERO   # направление проджектайла
-export var recoilForce: float = 95.0           # сила отдачи игрока от проджектайла, в случае касания с объектом
+export var recoilForce: float = 80.0           # сила отдачи игрока от проджектайла, в случае касания с объектом
 export var damage: int = 1                     # урон по блокам и противникам
 export(NodePath) var poolPath                                                 # ПУТЬ К внешний пул проджектайлов
 onready var pool: Node2D = get_node(poolPath) if poolPath else null           # внешний пул проджектайлов
@@ -28,6 +28,8 @@ func activate(startpos: Vector2, dir: Vector2):
 	direction = dir.normalized()
 	global_position = startpos + direction * 24.0 # <- это создаёт проджектайл не прямо в точке, а 
 	visible = true                                #    чутка дальше чем надо.
+	sprite2d.modulate.a = 1.0
+	sprite2d.scale = baseScaleSprite
 	set_physics_process(true)
 	monitorable = true
 	monitoring = true
@@ -50,16 +52,17 @@ func _on_body_entered(body: Node2D):
 	
 	# анимация уничтожения
 	var tween: Tween = Tween.new()
-	tween.set_ease(Tween.EASE_OUT)
-	tween.set_trans(Tween.TRANS_CIRC)
-	tween.set_parallel(true)
-	tween.tween_property(sprite2d, "scale", baseScaleSprite * 2, 0.2)
-	tween.tween_property(sprite2d, "modulate:a", 0.0, 0.2)
-	yield(tween, "finished")
-	
-	# возвращение обратно в пул
-	pool.returnProjectile(self)
+	add_child(tween)
+	tween.interpolate_property(sprite2d, "scale", sprite2d.scale, baseScaleSprite * 2, 0.2, Tween.TRANS_CIRC, Tween.EASE_OUT)
+	tween.interpolate_property(sprite2d, "modulate:a", sprite2d.modulate.a, 0.0, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	tween.start()
+	yield(tween, "tween_completed")
+	tween.queue_free()
 	
 	# возвращение обычных характеристик внешнего вида
 	sprite2d.modulate.a = 1.0
 	sprite2d.scale = baseScaleSprite
+	
+	# возвращение обратно в пул
+	if pool == null: pool = get_tree().get_first_node_in_group("projectile pool")
+	pool.returnProjectile(self)

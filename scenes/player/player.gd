@@ -7,7 +7,7 @@ onready var projectileTimer: Timer = $projectileTimer
 var velocity: Vector2 = Vector2.ZERO              # просто velocity
 var gravity: float = ProjectSettings.get_setting(
 	"physics/2d/default_gravity"                  # гравитация (берётся из настроек)
-)
+) * 10
 var touchMoveActive: bool = false                 # срабатывает, когда касание части экрана для ходьбы активно
 var touchMoveStart: Vector2 = Vector2.ZERO        # расчёт начальной точки касания
 var touchMoveDragOffset: Vector2 = Vector2.ZERO   # финальный расчёт конечной точки движения
@@ -22,7 +22,7 @@ var aimPosition: Vector2 = Vector2.ZERO           # позиция прицел�
 var lastAimGamepadActive: bool = false            # для анимации прицела (ГЕЙМПАД)
 
 export(float) var maxSpeedMove = 300.0            # максимальная скорость передвижения игрока
-export(float) var jumpVelocity = -450.0           # сила прыжка (отрицательная — вверх)
+export(float) var jumpVelocity = -350.0           # сила прыжка (отрицательная — вверх)
 export(float) var accelerationMove = 30.0         # плавность начала ходьбы
 export(float) var deaccelerationMove = 60.0       # плавность конца ходьбы
 export(bool) var enableMaxDistanceAim = true      # включить ограничения прицела по растоянию
@@ -44,7 +44,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-	move_and_slide(velocity)
+	velocity = move_and_slide(velocity, Vector2.UP)
 
 func InputManagement():
 	# заготовка для нужного Velocity по X оси
@@ -71,13 +71,21 @@ func InputManagement():
 			aimPosition = get_global_mouse_position() - global_position
 		# на геймпаде по правому стику
 		else:
-			var aimX = Input.get_axis("AIMLEFT", "AIMRIGHT")
-			var aimY = Input.get_axis("AIMUP", "AIMDOWN")
-			aimPosition = Vector2(aimX, aimY) * maxDistanceAim
+			# определяем сторону и силу передвижения стика
+			var aimX = Input.get_joy_axis(0, JOY_AXIS_2)
+			var aimY = Input.get_joy_axis(0, JOY_AXIS_3)
+			var rawAim = Vector2(aimX, aimY)
+			# нормализуем сторону стрельбы со стика
+			if rawAim.length() < Global.aimGamepadDeadZone:
+				rawAim = Vector2.ZERO
+			else:
+				rawAim = rawAim.normalized() * ((rawAim.length() - Global.aimGamepadDeadZone) / (1.0 - Global.aimGamepadDeadZone))
 			
-			# определяем, было ли последнее действие правого стика геймпада
-			# тем же, если нет то запускаем анимацию прицела
-			var aimGamepadActive: bool = true if aimPosition != Vector2.ZERO else false
+			# задаём позицию прицела
+			aimPosition = rawAim * maxDistanceAim
+			
+			# если геймпад активен, то активируем анимацию, в ином случае другую
+			var aimGamepadActive: bool = rawAim.length() > 0.1
 			if lastAimGamepadActive != aimGamepadActive:
 				if aimGamepadActive:
 					aimFrontAnimationTween()
@@ -194,14 +202,14 @@ func aimBackAnimationTween():
 	aimSprite.modulate.a = 1.0 
 	
 	var tween: Tween = Tween.new()
-	tween.set_parallel(true)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.set_trans(Tween.TRANS_CIRC)
+	add_child(tween)
+	tween.interpolate_property(aimSprite, "position", aimSprite.position, Vector2.ZERO, 0.2, Tween.TRANS_BACK, Tween.EASE_IN)
+	tween.interpolate_property(aimSprite, "modulate:a", aimSprite.modulate.a, 0.0, 0.2)
+	tween.start()
 	
-	tween.tween_property(aimSprite, "position", Vector2.ZERO, 0.2)
-	tween.tween_property(aimSprite, "modulate:a", 0.0, 0.2)
+	yield(tween, "tween_completed")
+	tween.queue_free()
 	
-	yield(tween, "finished")
 	if not touchAimActive:
 		aimSprite.visible = false
 
@@ -211,13 +219,14 @@ func aimFrontAnimationTween():
 	aimSprite.scale = Vector2(4.0, 4.0)
 	
 	var tween: Tween = Tween.new()
-	tween.set_parallel(true)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.set_trans(Tween.TRANS_BACK)
+	add_child(tween)
+	tween.interpolate_property(aimSprite, "scale", aimSprite.scale, Vector2(1.0, 1.0), 0.2, Tween.TRANS_CIRC, Tween.EASE_OUT)
+	tween.interpolate_property(aimSprite, "scale", aimSprite.scale, Vector2(1.0, 1.0), 0.2, Tween.TRANS_CIRC, Tween.EASE_OUT)
+	tween.interpolate_property(aimSprite, "modulate:a", aimSprite.modulate.a, 1.0, 0.3, Tween.TRANS_LINEAR)
+	tween.start()
 	
-	tween.tween_property(aimSprite, "scale", Vector2(1.0, 1.0), 0.5)
-	tween.tween_property(aimSprite, "modulate:a", 1.0, 0.3)
+	yield(tween, "tween_completed")
+	tween.queue_free()
 	
-	yield(tween, "finished")
 	if not touchAimActive:
 		aimSprite.visible = false

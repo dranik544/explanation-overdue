@@ -7,13 +7,14 @@ export(int) var poolSize = 15             # кол-во заготовленны
 
 
 func _ready():
+	add_to_group("projectile pool")
 	# стартовое создание пула
-	for i in range(poolSize):
-		var bullet: Area2D = projectileScene.instantiate()
+	for _i in range(poolSize):
+		var bullet: Area2D = projectileScene.instance()
 		# отключение физической обработки и видимости
 		bullet.visible = false
 		bullet.set_physics_process(false)
-		bullet.pool = self
+		bullet.poolPath = self.get_path()
 		
 		add_child(bullet)
 		
@@ -27,13 +28,13 @@ func getProjectile() -> Node2D:
 			return i
 	
 	# если проджектайлов не хватает, то надо создать ещё
-	var newProjectile: Area2D = projectileScene.instantiate()
+	var newProjectile: Area2D = projectileScene.instance()
 	newProjectile.pool = self
 	add_child(newProjectile)
 	
 	pool.append(newProjectile)
 	
-	print("new created")
+	print("new projectile created")
 	return newProjectile
 
 # возвращение проджектайла обратно в пул
