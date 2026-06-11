@@ -21,6 +21,27 @@ func destroy(damage: int):
 	# отнимаем от здоровья кол-во урона
 	health -= damage
 	
+	match currentBlockType:
+		0:
+			var tweenDamage: Tween = Tween.new()
+			add_child(tweenDamage)
+			
+			tweenDamage.interpolate_property(sprite2d, "rotation", sprite2d.rotation, sprite2d.rotation + rand_range(-0.1, 0.1), 0.01)
+			tweenDamage.interpolate_property(sprite2d, "modulate", sprite2d.modulate, Color(1.0, 0.5, 0.5, 1.0), 0.01)
+			tweenDamage.start()
+			yield(tweenDamage, "tween_completed")
+			
+			tweenDamage.queue_free()
+			var tweenDamageR: Tween = Tween.new()
+			add_child(tweenDamageR)
+			
+			tweenDamageR.interpolate_property(sprite2d, "rotation", sprite2d.rotation, 0.0, 0.15, Tween.TRANS_CIRC, Tween.EASE_IN)
+			tweenDamageR.interpolate_property(sprite2d, "modulate", sprite2d.modulate, Color(1.0, 1.0, 1.0, 1.0), 0.15, Tween.TRANS_CIRC, Tween.EASE_IN)
+			tweenDamageR.start()
+			yield(tweenDamageR, "tween_completed")
+			
+			tweenDamageR.queue_free()
+	
 	# если здоровья меньше или равно нулю, то ...
 	if health <= 0:
 		# отключаем обработку блока и коллизии
@@ -55,3 +76,4 @@ func returnSpriteAfterDestroyAnimation():
 		0:
 			sprite2d.rotation = 0.0
 			sprite2d.scale = Vector2(1.0, 1.0)
+			sprite2d.modulate = Color(1.0, 1.0, 1.0, 1.0)
