@@ -1,9 +1,14 @@
 extends Node2D
 
-export(float) var minInterval = 1.0   # минимальное время появления
-export(float) var maxInterval = 2.0   # максимальное время появления
+export(float) var minInterval = 1.0    # минимальное время появления
+export(float) var maxInterval = 2.0    # максимальное время появления
+export(NodePath) var finalPortalPath   # путь к финальному порталу
+onready var finalPortal: Node2D = get_node(finalPortalPath) if finalPortalPath else null
+export(int) var neededBlocksSpawnForSpawnFinalPortal = 25   # нужное кол-во выпущеных блоков для спавна портала
 
-var pool: Array = []   # пул блоков
+var pool: Array = []           # пул блоков
+var BlockSpawnCount: int = 0   # кол-во созданных блоков
+
 
 func _ready():
 	# получаем всех ДЕТЕЙ
@@ -23,6 +28,12 @@ func scheduleNextSpawn():
 func spawnBlock():
 	# берём рандомный блок
 	pool.shuffle()
+	BlockSpawnCount += 1
+	
+	if BlockSpawnCount >= neededBlocksSpawnForSpawnFinalPortal:
+		activatePortal()
+		return
+	
 	for i in pool:
 		if not i.visible:
 			# ставим за экраном
@@ -38,3 +49,7 @@ func spawnBlock():
 func returnBlock(block: Node2D):
 	block.visible = false
 	if block.has_method("deactivate"): block.deactivate()
+
+func activatePortal():
+	if finalPortal == null: return
+	finalPortal.activate()

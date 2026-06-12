@@ -27,7 +27,7 @@ func destroy(damage: int):
 			add_child(tweenDamage)
 			
 			tweenDamage.interpolate_property(sprite2d, "rotation", sprite2d.rotation, sprite2d.rotation + rand_range(-0.1, 0.1), 0.01)
-			tweenDamage.interpolate_property(sprite2d, "modulate", sprite2d.modulate, Color(1.0, 0.5, 0.5, 1.0), 0.01)
+			tweenDamage.interpolate_property(sprite2d, "modulate", sprite2d.modulate, Color(0.5, 0.5, 0.5, 1.0), 0.01)
 			tweenDamage.start()
 			yield(tweenDamage, "tween_completed")
 			
@@ -35,8 +35,8 @@ func destroy(damage: int):
 			var tweenDamageR: Tween = Tween.new()
 			add_child(tweenDamageR)
 			
-			tweenDamageR.interpolate_property(sprite2d, "rotation", sprite2d.rotation, 0.0, 0.15, Tween.TRANS_CIRC, Tween.EASE_IN)
-			tweenDamageR.interpolate_property(sprite2d, "modulate", sprite2d.modulate, Color(1.0, 1.0, 1.0, 1.0), 0.15, Tween.TRANS_CIRC, Tween.EASE_IN)
+			tweenDamageR.interpolate_property(sprite2d, "rotation", sprite2d.rotation, 0.0, 0.2, Tween.TRANS_CIRC, Tween.EASE_IN)
+			tweenDamageR.interpolate_property(sprite2d, "modulate", sprite2d.modulate, Color(1.0, 1.0, 1.0, 1.0), 0.2, Tween.TRANS_CIRC, Tween.EASE_IN)
 			tweenDamageR.start()
 			yield(tweenDamageR, "tween_completed")
 			

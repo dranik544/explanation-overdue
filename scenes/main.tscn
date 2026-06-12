@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/projectile_pool.gd" type="Script" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://scenes/blocks_group_1.gd" type="Script" id=5]
 [ext_resource path="res://scenes/blocks/block_1.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/camera_2d.gd" type="Script" id=7]
+[ext_resource path="res://scenes/finalPortal.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/main.gd" type="Script" id=9]
+[ext_resource path="res://scenes/deathZone.gd" type="Script" id=10]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 2.09369e-06, 0.516062, 9.62615e-08, 1, 1.67254e-06, 0.395666, 4.81308e-08, 1 )
@@ -17,6 +20,18 @@ width = 580
 height = 40
 fill = 1
 
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 510, 100 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 510, 100 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 100, 310 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 100, 310 )
+
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 255, 10 )
 
@@ -24,13 +39,34 @@ extents = Vector2( 255, 10 )
 extents = Vector2( 10, 155 )
 
 [node name="main" type="Node2D"]
+script = ExtResource( 9 )
 
 [node name="visual" type="Node2D" parent="."]
-position = Vector2( 0, 8 )
 
 [node name="floor" type="Sprite" parent="visual"]
 position = Vector2( 0, 125 )
 texture = SubResource( 2 )
+
+[node name="deathZone" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="deathZone"]
+position = Vector2( 0, 241 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="deathZone"]
+position = Vector2( 0, -245 )
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="deathZone"]
+position = Vector2( -350, 0 )
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="deathZone"]
+position = Vector2( 350, 0 )
+shape = SubResource( 8 )
 
 [node name="collisions" type="StaticBody2D" parent="."]
 collision_mask = 0
@@ -58,8 +94,9 @@ projectileScene = ExtResource( 4 )
 poolSize = 10
 
 [node name="BlockPool" type="Node2D" parent="."]
-position = Vector2( 0, -7 )
 script = ExtResource( 3 )
+finalPortalPath = NodePath("../finalPortal")
+neededBlocksSpawnForSpawnFinalPortal = 2
 
 [node name="blocksGroup1" type="Node2D" parent="BlockPool"]
 position = Vector2( -80, -320 )
@@ -123,8 +160,11 @@ position = Vector2( 0, -88 )
 [node name="block4" parent="BlockPool/blocksGroup6" instance=ExtResource( 6 )]
 position = Vector2( 104, 56 )
 
+[node name="finalPortal" parent="." instance=ExtResource( 8 )]
+position = Vector2( 353, 0 )
+
 [node name="player" parent="." instance=ExtResource( 1 )]
-position = Vector2( -160, 104 )
+position = Vector2( -155, 100 )
 poolPath = NodePath("../ProjectilePool")
 cameraPath = NodePath("../Camera2D")
 
