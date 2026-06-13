@@ -2,18 +2,27 @@ extends Camera2D
 
 var shakeIntensity: float = 0.0   # сила тряски
 var shakeTime: float = 0.0        # время тряски
+var basePosition: Vector2 = Vector2.ZERO
+
+export(NodePath) var playerPath   #
+onready var player: KinematicBody2D = get_node(playerPath) if playerPath else null
 
 
 func _ready() -> void:
 	add_to_group("camera")
+	basePosition = global_position
 
 # эта функция при вызове начинает тряску
 func applyShake(intensity: float, duration: float):
 	shakeTime = duration
 	shakeIntensity = intensity
+	shakeIntensity = intensity
 
 func _process(delta: float) -> void:
-# если время тряски не истекло
+	if player:
+		position = basePosition + (player.global_position * 0.05)
+	
+	# если время тряски не истекло
 	if shakeTime > 0:
 		# убавляем время и трясём экран
 		shakeTime -= delta

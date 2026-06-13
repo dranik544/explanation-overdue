@@ -96,7 +96,6 @@ poolSize = 10
 [node name="BlockPool" type="Node2D" parent="."]
 script = ExtResource( 3 )
 finalPortalPath = NodePath("../finalPortal")
-neededBlocksSpawnForSpawnFinalPortal = 2
 
 [node name="blocksGroup1" type="Node2D" parent="BlockPool"]
 position = Vector2( -80, -320 )
@@ -173,3 +172,4 @@ rotating = true
 current = true
 zoom = Vector2( 0.75, 0.75 )
 script = ExtResource( 7 )
+playerPath = NodePath("../player")
