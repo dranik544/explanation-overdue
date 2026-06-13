@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+onready var sprite: AnimatedSprite = $Sprite
 onready var aimSprite: Sprite = $aimSprite
 onready var weapon: Sprite = $weapon
 onready var projectileTimer: Timer = $projectileTimer
@@ -45,6 +46,9 @@ func _physics_process(delta: float) -> void:
 		velocity.y += gravity * delta
 	
 	velocity = move_and_slide(velocity, Vector2.UP)
+
+func _process(delta):
+	sprite.speed_scale = (Global.speedLoc + abs(velocity.x)) * 0.008
 
 func InputManagement():
 	# заготовка для нужного Velocity по X оси
@@ -199,6 +203,8 @@ func shoot():
 	if camera and camera.has_method("applyShake"): camera.applyShake(projectile.recoilForce * 0.01, 0.05)
 
 func aimBackAnimationTween():
+	if !Global.enableAnimations: return
+	
 	aimSprite.modulate.a = 1.0 
 	
 	var tween: Tween = Tween.new()
@@ -214,6 +220,8 @@ func aimBackAnimationTween():
 		aimSprite.visible = false
 
 func aimFrontAnimationTween():
+	if !Global.enableAnimations: return
+	
 	aimSprite.visible = true
 	aimSprite.modulate.a = 0.0
 	aimSprite.scale = Vector2(4.0, 4.0)

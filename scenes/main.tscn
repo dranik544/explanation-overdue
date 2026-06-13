@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/projectile_pool.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/finalPortal.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/main.gd" type="Script" id=9]
 [ext_resource path="res://scenes/deathZone.gd" type="Script" id=10]
+[ext_resource path="res://themes/defaultTheme.tres" type="Theme" id=11]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 2.09369e-06, 0.516062, 9.62615e-08, 1, 1.67254e-06, 0.395666, 4.81308e-08, 1 )
@@ -37,6 +38,12 @@ extents = Vector2( 255, 10 )
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 10, 155 )
+
+[sub_resource type="InputEventAction" id=9]
+action = "ESC"
+
+[sub_resource type="ShortCut" id=10]
+shortcut = SubResource( 9 )
 
 [node name="main" type="Node2D"]
 script = ExtResource( 9 )
@@ -86,12 +93,6 @@ shape = SubResource( 4 )
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="collisions"]
 position = Vector2( 240, 0 )
 shape = SubResource( 4 )
-
-[node name="ProjectilePool" type="Node2D" parent="."]
-position = Vector2( -999, -999 )
-script = ExtResource( 2 )
-projectileScene = ExtResource( 4 )
-poolSize = 10
 
 [node name="BlockPool" type="Node2D" parent="."]
 script = ExtResource( 3 )
@@ -162,6 +163,11 @@ position = Vector2( 104, 56 )
 [node name="finalPortal" parent="." instance=ExtResource( 8 )]
 position = Vector2( 353, 0 )
 
+[node name="ProjectilePool" type="Node2D" parent="."]
+position = Vector2( -998, -999 )
+script = ExtResource( 2 )
+projectileScene = ExtResource( 4 )
+
 [node name="player" parent="." instance=ExtResource( 1 )]
 position = Vector2( -155, 100 )
 poolPath = NodePath("../ProjectilePool")
@@ -173,3 +179,14 @@ current = true
 zoom = Vector2( 0.75, 0.75 )
 script = ExtResource( 7 )
 playerPath = NodePath("../player")
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="pauseButton" type="Button" parent="GUI"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 60.0
+margin_bottom = 30.0
+theme = ExtResource( 11 )
+shortcut = SubResource( 10 )
+text = "Pause"

@@ -22,6 +22,7 @@ func _process(delta: float) -> void:
 	if player:
 		position = basePosition + (player.global_position * 0.05)
 	
+	if !Global.enableShakeScreen: return
 	# если время тряски не истекло
 	if shakeTime > 0:
 		# убавляем время и трясём экран

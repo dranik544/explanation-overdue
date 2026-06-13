@@ -33,6 +33,14 @@ func activate(startpos: Vector2, dir: Vector2):
 	set_physics_process(true)
 	monitorable = true
 	monitoring = true
+	
+	if Global.enableAnimations:
+		var tween: Tween = Tween.new()
+		add_child(tween)
+		tween.interpolate_property(sprite2d, "scale", Vector2.ZERO, baseScaleSprite, 0.05)
+		tween.start()
+		yield(tween, "tween_completed")
+		tween.queue_free()
 
 # уничтожение проджектайла при касании
 func _on_body_entered(body: Node2D):
@@ -51,13 +59,14 @@ func _on_body_entered(body: Node2D):
 	if camera and camera.has_method("applyShake"): camera.applyShake(recoilForce * 0.01, 0.2)
 	
 	# анимация уничтожения
-	var tween: Tween = Tween.new()
-	add_child(tween)
-	tween.interpolate_property(sprite2d, "scale", sprite2d.scale, baseScaleSprite * 2, 0.2, Tween.TRANS_CIRC, Tween.EASE_OUT)
-	tween.interpolate_property(sprite2d, "modulate:a", sprite2d.modulate.a, 0.0, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	tween.start()
-	yield(tween, "tween_completed")
-	tween.queue_free()
+	if Global.enableAnimations:
+		var tween: Tween = Tween.new()
+		add_child(tween)
+		tween.interpolate_property(sprite2d, "scale", sprite2d.scale, baseScaleSprite * 2, 0.2, Tween.TRANS_CIRC, Tween.EASE_OUT)
+		tween.interpolate_property(sprite2d, "modulate:a", sprite2d.modulate.a, 0.0, 0.2, Tween.TRANS_LINEAR, Tween.EASE_IN)
+		tween.start()
+		yield(tween, "tween_completed")
+		tween.queue_free()
 	
 	# возвращение обычных характеристик внешнего вида
 	sprite2d.modulate.a = 1.0
