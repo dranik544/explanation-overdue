@@ -251,7 +251,7 @@ func damage(count: int):
 	if health <= 0: return
 	
 	health -= count
-	print("player health: ", str(health))
+	Global.speedLoc = max(Global.speedLoc - (maxHealth - health), 120.0)   # скорость локации упадёт, но не ниже 120
 	
 	if health <= 0: death()
 	
@@ -260,7 +260,6 @@ func damage(count: int):
 		add_child(tween)
 		
 		spriteEyes.animation = "damageEyes_" + str(sprite.animation)
-		print("damageEyes_" + str(sprite.animation))
 		
 		tween.interpolate_property(sprite, "modulate", sprite.modulate, Color(1.0, 0.0, 0.0, 1.0), 0.1, Tween.TRANS_CIRC, Tween.EASE_IN)
 		tween.start()
