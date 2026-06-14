@@ -1,28 +1,13 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/player/player.gd" type="Script" id=1]
 [ext_resource path="res://sprites/aimSprite2.png" type="Texture" id=2]
-[ext_resource path="res://sprites/player/playerIdle1.png" type="Texture" id=3]
-[ext_resource path="res://sprites/player/playerRun1.png" type="Texture" id=4]
-[ext_resource path="res://sprites/player/playerRun2.png" type="Texture" id=5]
-[ext_resource path="res://sprites/player/playerIdle2.png" type="Texture" id=6]
+[ext_resource path="res://spriteFrames/player.tres" type="SpriteFrames" id=3]
+[ext_resource path="res://spriteFrames/eyes.tres" type="SpriteFrames" id=7]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 12.0
 height = 34.0
-
-[sub_resource type="SpriteFrames" id=4]
-animations = [ {
-"frames": [ ExtResource( 3 ), ExtResource( 6 ) ],
-"loop": true,
-"name": "idle",
-"speed": 4.0
-}, {
-"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 5 ) ],
-"loop": true,
-"name": "run",
-"speed": 4.0
-} ]
 
 [sub_resource type="Gradient" id=2]
 
@@ -39,8 +24,13 @@ position = Vector2( 0, 2 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 4 )
+frames = ExtResource( 3 )
 animation = "run"
+playing = true
+
+[node name="eyes" type="AnimatedSprite" parent="."]
+frames = ExtResource( 7 )
+animation = "none"
 playing = true
 
 [node name="weapon" type="Sprite" parent="."]

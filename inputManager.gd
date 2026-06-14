@@ -18,7 +18,7 @@ func _input(event):
 	elif event is InputEventMouseButton or event is InputEventMouseMotion or event is InputEventKey:
 		currentMode = InputMode.KEYBOARD_MOUSE
 		#print("keyboard/mouse mode")
-	
+
 	# кнопки геймпада = консольное
 	elif event is InputEventJoypadButton or event is InputEventJoypadMotion:
 		currentMode = InputMode.GAMEPAD

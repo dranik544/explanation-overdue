@@ -6,7 +6,11 @@ onready var collisionShape2d: CollisionShape2D = $CollisionShape2D
 var maxHealth: int                          # максимальное здоровье блока
 
 export var health: int = 4                  # здоровье блока (блять здоровье у блока, ахуенно просто)
-enum blockType {default}                    # все типы блоков
+# все типы блоков
+enum blockType {
+	default,
+	undamaged
+}
 export(blockType) var currentBlockType      # текущий тип блока
 export(bool) var startedDeactivate = true   # стартовая деактивация
 
@@ -23,7 +27,7 @@ func destroy(damage: int):
 	
 	if Global.enableAnimations:
 		match currentBlockType:
-			0:
+			blockType.default:
 				var tweenDamage: Tween = Tween.new()
 				add_child(tweenDamage)
 				
@@ -42,6 +46,8 @@ func destroy(damage: int):
 				yield(tweenDamageR, "tween_completed")
 				
 				tweenDamageR.queue_free()
+#			blockType.undamaged:   # у этого типа блока нет анимации получения урона
+#
 	
 	# если здоровья меньше или равно нулю, то ...
 	if health <= 0:
@@ -51,7 +57,7 @@ func destroy(damage: int):
 		
 		# ... запускаем анимацию в зависимости от типа блока
 		match currentBlockType:
-			0:
+			blockType.default:
 				if Global.enableAnimations:
 					var tween: Tween = Tween.new()
 					add_child(tween)

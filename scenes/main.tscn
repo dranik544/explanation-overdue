@@ -169,7 +169,7 @@ script = ExtResource( 2 )
 projectileScene = ExtResource( 4 )
 
 [node name="player" parent="." instance=ExtResource( 1 )]
-position = Vector2( -155, 100 )
+position = Vector2( -100, 90 )
 poolPath = NodePath("../ProjectilePool")
 cameraPath = NodePath("../Camera2D")
 
