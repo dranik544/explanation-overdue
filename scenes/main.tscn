@@ -10,7 +10,7 @@
 [ext_resource path="res://scenes/finalPortal.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/main.gd" type="Script" id=9]
 [ext_resource path="res://scenes/deathZone.gd" type="Script" id=10]
-[ext_resource path="res://themes/defaultTheme.tres" type="Theme" id=11]
+[ext_resource path="res://sprites/backgrounds/bg1.png" type="Texture" id=11]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 2.09369e-06, 0.516062, 9.62615e-08, 1, 1.67254e-06, 0.395666, 4.81308e-08, 1 )
@@ -49,6 +49,17 @@ shortcut = SubResource( 9 )
 script = ExtResource( 9 )
 
 [node name="visual" type="Node2D" parent="."]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="visual"]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="visual/ParallaxBackground"]
+motion_scale = Vector2( 0.25, 0.25 )
+motion_mirroring = Vector2( 640, 0 )
+
+[node name="Sprite" type="Sprite" parent="visual/ParallaxBackground/ParallaxLayer"]
+position = Vector2( -320, -180 )
+texture = ExtResource( 11 )
+centered = false
 
 [node name="floor" type="Sprite" parent="visual"]
 position = Vector2( 0, 125 )
@@ -183,10 +194,9 @@ playerPath = NodePath("../player")
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="pauseButton" type="Button" parent="GUI"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 60.0
-margin_bottom = 30.0
-theme = ExtResource( 11 )
+margin_left = 5.0
+margin_top = 6.0
+margin_right = 39.0
+margin_bottom = 20.0
 shortcut = SubResource( 10 )
 text = "Pause"

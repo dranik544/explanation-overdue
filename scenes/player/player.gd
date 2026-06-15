@@ -5,6 +5,7 @@ onready var spriteEyes: AnimatedSprite = $eyes
 onready var aimSprite: Sprite = $aimSprite
 onready var weapon: Sprite = $weapon
 onready var projectileTimer: Timer = $projectileTimer
+onready var damageSplash = $GUI/damageSplash
 
 var velocity: Vector2 = Vector2.ZERO              # просто velocity
 var gravity: float = ProjectSettings.get_setting(
@@ -260,6 +261,11 @@ func damage(count: int):
 		add_child(tween)
 		
 		spriteEyes.animation = "damageEyes_" + str(sprite.animation)
+		
+		var tweenDS: Tween = Tween.new()
+		add_child(tweenDS)
+		tweenDS.interpolate_property(damageSplash, "modulate:a", 1.0, 0.0, 1.0, Tween.TRANS_CIRC, Tween.EASE_IN)
+		tweenDS.start()
 		
 		tween.interpolate_property(sprite, "modulate", sprite.modulate, Color(1.0, 0.0, 0.0, 1.0), 0.1, Tween.TRANS_CIRC, Tween.EASE_IN)
 		tween.start()
