@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/projectile_pool.gd" type="Script" id=2]
@@ -11,6 +11,32 @@
 [ext_resource path="res://scenes/main.gd" type="Script" id=9]
 [ext_resource path="res://scenes/deathZone.gd" type="Script" id=10]
 [ext_resource path="res://sprites/backgrounds/bg1.png" type="Texture" id=11]
+
+[sub_resource type="GDScript" id=11]
+script/source = "extends Node2D
+
+onready var bg1 = $bg1   # первый спрайт
+onready var bg2 = $bg2   # второй спрайт (должен быть с той же текстурой)
+
+var spriteWidth: float
+
+func _ready():
+	spriteWidth = bg1.texture.get_width()
+	
+	bg1.position = Vector2.ZERO
+	bg2.position = Vector2(spriteWidth, 0)
+
+func _process(delta):
+	var offset = Global.speedLoc * delta   # двигаем влево (отрицательное направление)
+	
+	bg1.position.x -= offset * 0.2
+	bg2.position.x -= offset * 0.2
+	
+	if bg1.position.x + spriteWidth < 0:
+		bg1.position.x = bg2.position.x + spriteWidth
+	elif bg2.position.x + spriteWidth < 0:
+		bg2.position.x = bg1.position.x + spriteWidth
+"
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 2.09369e-06, 0.516062, 9.62615e-08, 1, 1.67254e-06, 0.395666, 4.81308e-08, 1 )
@@ -50,16 +76,16 @@ script = ExtResource( 9 )
 
 [node name="visual" type="Node2D" parent="."]
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="visual"]
+[node name="bg" type="Node2D" parent="visual"]
+script = SubResource( 11 )
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="visual/ParallaxBackground"]
-motion_scale = Vector2( 0.25, 0.25 )
-motion_mirroring = Vector2( 640, 0 )
-
-[node name="Sprite" type="Sprite" parent="visual/ParallaxBackground/ParallaxLayer"]
+[node name="bg1" type="Sprite" parent="visual/bg"]
 position = Vector2( -320, -180 )
 texture = ExtResource( 11 )
-centered = false
+
+[node name="bg2" type="Sprite" parent="visual/bg"]
+position = Vector2( -320, -180 )
+texture = ExtResource( 11 )
 
 [node name="floor" type="Sprite" parent="visual"]
 position = Vector2( 0, 125 )
