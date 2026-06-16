@@ -148,10 +148,6 @@ func leftTouch(event: InputEvent):
 			touchMoveStart = event.position
 			touchMoveDragOffset = Vector2.ZERO
 		else:
-			# ВАЖНАЯ ЗАМЕТКА НА БУДУЩЕЕ:
-			# у всех устройств экраны разные, поэтому стоит расчитывать высоту свайпа с учётом
-			# размера экрана, иначе будет ооочень плохо.
-			
 			# если игрок сделал свайп вверх и он на полу, то можно ебануть вверх
 			if touchMoveStart.y - event.position.y > 50.0 and is_on_floor():
 				velocity.y = jumpVelocity
@@ -161,8 +157,8 @@ func leftTouch(event: InputEvent):
 	elif event is InputEventScreenDrag and touchMoveActive:
 		touchMoveDragOffset.x = (event.position.x - touchMoveStart.x) * Global.sensivityMove
 		
-		if touchMoveStart.y - event.position.y > 80.0 and is_on_floor():
-			velocity.y = jumpVelocity * (touchMoveStart.y - event.position.y) * 0.01
+		if touchMoveStart.y - event.position.y > get_viewport_rect().size.y / 4 and is_on_floor():
+			velocity.y = jumpVelocity
 			touchMoveStart.y = event.position.y
 
 func rightTouch(event: InputEvent):
