@@ -6,13 +6,22 @@ onready var collisionShape2d: CollisionShape2D = $CollisionShape2D
 var maxHealth: int                          # максимальное здоровье блока
 
 export var health: int = 4                  # здоровье блока (блять здоровье у блока, ахуенно просто)
+export(bool) var startedDeactivate = true   # стартовая деактивация
+
 # все типы блоков
 enum blockType {
-	default,
-	undamaged
+	default,       # обычный
+	undamaged,     # неразрушаемый
+	damaging       # наносящий урон # понадобится доп Area2D
 }
-export(blockType) var currentBlockType      # текущий тип блока
-export(bool) var startedDeactivate = true   # стартовая деактивация
+export(blockType) var currentBlockType                    # текущий тип блока
+export(int) var damagingTypeDamage = 5                    # сколько урона игроку наносит тип блока damaging
+export(bool) var damagingTypeDestroyAfterDamage = false   # уничтожение после нанесения урона игроку типа блока damaging
+export(NodePath) var damagingTypeAreaPath                 # путь к Area2D для типа блока damaging
+onready var damagingArea: Area2D = get_node(damagingTypeAreaPath) if damagingTypeAreaPath else null
+
+signal blockDeactivated
+signal blockActivated
 
 
 func _ready() -> void:
@@ -27,7 +36,7 @@ func destroy(damage: int):
 	
 	if Global.enableAnimations:
 		match currentBlockType:
-			blockType.default:
+			blockType.default, blockType.damaging:
 				var tweenDamage: Tween = Tween.new()
 				add_child(tweenDamage)
 				
@@ -51,13 +60,9 @@ func destroy(damage: int):
 	
 	# если здоровья меньше или равно нулю, то ...
 	if health <= 0:
-		# отключаем обработку блока и коллизии
-		collisionShape2d.set_deferred("disabled", true)
-		set_process(false)
-		
 		# ... запускаем анимацию в зависимости от типа блока
 		match currentBlockType:
-			blockType.default:
+			blockType.default, blockType.damaging:
 				if Global.enableAnimations:
 					var tween: Tween = Tween.new()
 					add_child(tween)
@@ -68,21 +73,27 @@ func destroy(damage: int):
 					tween.queue_free()
 				else:
 					sprite2d.scale = Vector2.ZERO
+		
+		deactivate()
 
 func activate():
+	emit_signal("blockActivated")
+	
 	health = maxHealth
 	returnSpriteAfterDestroyAnimation()
 	set_process(true)
 	collisionShape2d.set_deferred("disabled", false)
 
 func deactivate():
+	emit_signal("blockDeactivated")
+	
 	health = maxHealth
 	set_process(false)
 	collisionShape2d.set_deferred("disabled", true)
 
 func returnSpriteAfterDestroyAnimation():
 	match currentBlockType:
-		0:
+		blockType.default, blockType.damaging:
 			sprite2d.rotation = 0.0
 			sprite2d.scale = Vector2(1.0, 1.0)
 			sprite2d.modulate = Color(1.0, 1.0, 1.0, 1.0)

@@ -1,16 +1,17 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/projectile_pool.gd" type="Script" id=2]
 [ext_resource path="res://scenes/block_pool.gd" type="Script" id=3]
 [ext_resource path="res://scenes/projectiles/blaster projectile1.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/blocks_group_1.gd" type="Script" id=5]
-[ext_resource path="res://scenes/blocks/block_1.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/blocks/block1_undamaged.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/camera_2d.gd" type="Script" id=7]
 [ext_resource path="res://scenes/finalPortal.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/main.gd" type="Script" id=9]
 [ext_resource path="res://scenes/deathZone.gd" type="Script" id=10]
 [ext_resource path="res://sprites/backgrounds/bg1.png" type="Texture" id=11]
+[ext_resource path="res://scenes/blocks/block2_damaging.tscn" type="PackedScene" id=12]
 
 [sub_resource type="GDScript" id=11]
 script/source = "extends Node2D
@@ -142,11 +143,16 @@ script = ExtResource( 5 )
 [node name="block1" parent="BlockPool/blocksGroup1" instance=ExtResource( 6 )]
 position = Vector2( 0, 104 )
 
+[node name="block2_damaging" parent="BlockPool/blocksGroup1" instance=ExtResource( 12 )]
+
 [node name="blocksGroup2" type="Node2D" parent="BlockPool"]
 position = Vector2( 0, -320 )
 script = ExtResource( 5 )
 
 [node name="block1" parent="BlockPool/blocksGroup2" instance=ExtResource( 6 )]
+
+[node name="block2_damaging" parent="BlockPool/blocksGroup2" instance=ExtResource( 12 )]
+position = Vector2( 0, 104 )
 
 [node name="blocksGroup3" type="Node2D" parent="BlockPool"]
 position = Vector2( 80, -320 )

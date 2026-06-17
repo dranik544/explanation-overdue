@@ -9,13 +9,11 @@ func _process(delta):
 		get_parent().returnBlock(self)
 
 func activate():
-	visible = true
 	set_process(true)
 	for i in get_children():
 		if i.has_method("activate"): i.activate()
 
 func deactivate():
-	visible = false
 	set_process(false)
 	for i in get_children():
 		if i.has_method("deactivate"): i.deactivate()
