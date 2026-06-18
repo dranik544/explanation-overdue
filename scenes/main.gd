@@ -9,4 +9,4 @@ func _ready():
 
 
 func _process(delta):
-	Global.speedLoc += speedLocAcceleration * delta
+	Global.speedLoc += speedLocAcceleration * Global.multiplierSpeedLocAcceleration * delta

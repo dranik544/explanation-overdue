@@ -18,6 +18,11 @@ var baseScaleSprite: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	connect("body_entered", self, "_on_body_entered")
 	baseScaleSprite = sprite2d.scale
+	
+	# модификаторы
+	speed *= Global.multiplierProjectileSpeed
+	recoilForce *= Global.multiplierProjectileRecoilForce
+	damage *= Global.multiplierProjectileDamage
 
 func _physics_process(delta):
 	# движение проджектайла по направлению, с учётом скорости и фпс

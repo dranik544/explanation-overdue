@@ -17,8 +17,6 @@ enum blockType {
 export(blockType) var currentBlockType                    # текущий тип блока
 export(int) var damagingTypeDamage = 5                    # сколько урона игроку наносит тип блока damaging
 export(bool) var damagingTypeDestroyAfterDamage = false   # уничтожение после нанесения урона игроку типа блока damaging
-export(NodePath) var damagingTypeAreaPath                 # путь к Area2D для типа блока damaging
-onready var damagingArea: Area2D = get_node(damagingTypeAreaPath) if damagingTypeAreaPath else null
 
 signal blockDeactivated
 signal blockActivated
@@ -27,6 +25,10 @@ signal blockActivated
 func _ready() -> void:
 	maxHealth = health
 	if startedDeactivate: deactivate()
+	
+	# модификаторы
+	health *= Global.multiplierBlockHealth
+	maxHealth = health
 
 func destroy(damage: int):
 	if health <= 0: return

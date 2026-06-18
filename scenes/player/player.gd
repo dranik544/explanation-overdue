@@ -31,7 +31,7 @@ export(float) var deaccelerationMove = 60.0       # плавность конц�
 export(bool) var enableMaxDistanceAim = true      # включить ограничения прицела по растоянию
 export(float) var maxDistanceAim = 75.0           # ограничения прицела по растоянию                     
 export(int) var health = 100                      # здоровье игрока
-var maxHealth: int = health                       # максимальное возможное здоровье
+var maxHealth: int                                # максимальное возможное здоровье
 
 export(NodePath) var poolPath                                                 # ПУТЬ К внешний пул проджектайлов
 onready var pool: Node2D = get_node(poolPath) if poolPath else null           # внешний пул проджектайлов
@@ -43,6 +43,12 @@ func _ready() -> void:
 	add_to_group("player")
 	
 	aimSprite.visible = false
+	
+	# применения модификаций
+	health *= Global.multiplierPlayerHealth
+	maxHealth = health
+	maxSpeedMove *= Global.multiplierPlayerSpeed
+	jumpVelocity *= Global.multiplierPlayerJumpVelocity
 
 func _physics_process(delta: float) -> void:
 	InputManagement()
