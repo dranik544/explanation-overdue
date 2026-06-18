@@ -9,6 +9,8 @@ var currentMode = InputMode.TOUCH
 
 
 func _input(event):
+	if Global.forceInputTypeSelect != -1: return
+	
 	# касание или свайп экрана = тачскрин
 	if event is InputEventScreenTouch or event is InputEventScreenDrag:
 		currentMode = InputMode.TOUCH
@@ -25,4 +27,7 @@ func _input(event):
 		#print("gamepad mode")
 
 func getMode():
-	return currentMode
+	if Global.forceInputTypeSelect == -1:
+		return currentMode
+	else:
+		return Global.forceInputTypeSelect
