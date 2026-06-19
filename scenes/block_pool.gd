@@ -21,7 +21,7 @@ func _ready():
 
 func scheduleNextSpawn():
 	# ждём случайное время и выпускаем блок
-	yield(get_tree().create_timer(rand_range(minInterval, maxInterval)), "timeout")
+	yield(get_tree().create_timer(rand_range(minInterval, maxInterval) / (Global.speedLoc * 0.005)), "timeout")
 	spawnBlock()
 	scheduleNextSpawn()
 

@@ -29,7 +29,7 @@ export(float) var jumpVelocity = -350.0           # сила прыжка (от�
 export(float) var accelerationMove = 30.0         # плавность начала ходьбы
 export(float) var deaccelerationMove = 60.0       # плавность конца ходьбы
 export(bool) var enableMaxDistanceAim = true      # включить ограничения прицела по растоянию
-export(float) var maxDistanceAim = 75.0           # ограничения прицела по растоянию                     
+export(float) var maxDistanceAim = 75.0           # ограничения прицела по растоянию                  
 export(int) var health = 100                      # здоровье игрока
 var maxHealth: int                                # максимальное возможное здоровье
 
@@ -49,6 +49,7 @@ func _ready() -> void:
 	maxHealth = health
 	maxSpeedMove *= Global.multiplierPlayerSpeed
 	jumpVelocity *= Global.multiplierPlayerJumpVelocity
+	projectileTimer.wait_time *= Global.multiplierPlayerProjectileTimerWaitTime
 
 func _physics_process(delta: float) -> void:
 	InputManagement()

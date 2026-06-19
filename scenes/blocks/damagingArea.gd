@@ -12,8 +12,8 @@ func _ready():
 	connect("body_entered", self, "bodyEntered")
 	
 	if block != null:
-		if block.has_signal("blockDeactivated"): block.connect("blockDeactivated", self, "blockDeactivated"); print("deact connect")
-		if block.has_signal("blockActivated"): block.connect("blockActivated", self, "blockActivated"); print("act connect")
+		if block.has_signal("blockDeactivated"): block.connect("blockDeactivated", self, "blockDeactivated");
+		if block.has_signal("blockActivated"): block.connect("blockActivated", self, "blockActivated");
 		damage = block.damagingTypeDamage
 
 func bodyEntered(body: Node2D):
@@ -26,14 +26,10 @@ func bodyEntered(body: Node2D):
 			if block.damagingTypeDestroyAfterDamage: block.destroy(9999)
 
 func blockActivated():
-	print("act")
-	
 	set_deferred("monitorable", true)
 	set_deferred("monitoring", true)
 
 func blockDeactivated():
-	print("deact")
-	
 	set_deferred("monitorable", false)
 	set_deferred("monitoring", false)
 
