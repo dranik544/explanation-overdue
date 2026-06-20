@@ -16,13 +16,15 @@
 [ext_resource path="res://scenes/main_bg.gd" type="Script" id=14]
 
 [sub_resource type="Gradient" id=1]
-colors = PoolColorArray( 2.09369e-06, 0.516062, 9.62615e-08, 1, 1.67254e-06, 0.395666, 4.81308e-08, 1 )
+offsets = PoolRealArray( 0, 0.569672, 1 )
+colors = PoolColorArray( 0.831055, 0.831055, 0.831055, 1, 1, 0, 0, 1, 0.467773, 0.467773, 0.467773, 1 )
 
 [sub_resource type="GradientTexture2D" id=2]
 gradient = SubResource( 1 )
-width = 580
-height = 40
-fill = 1
+width = 640
+height = 50
+fill_from = Vector2( 1, 1 )
+fill_to = Vector2( 0, 1 )
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 510, 100 )
@@ -67,6 +69,7 @@ texture = ExtResource( 13 )
 
 [node name="floor" type="Sprite" parent="visual"]
 position = Vector2( 0, 125 )
+scale = Vector2( 0.8, 0.8 )
 texture = SubResource( 2 )
 
 [node name="deathZone" type="Area2D" parent="."]
