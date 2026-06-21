@@ -1,8 +1,17 @@
 extends Node
 
-var speedLoc: float = 180.0
-enum locations {forest}
-export(locations) var currentLocation = locations.forest
+var speedLoc: float = 100.0
+enum locations {city, forest, hell}
+export(locations) var currentLocation = locations.city
+export(int) var currentLocationIndex = 0
+var playerHealth: float
+
+# --- пути к сценам локаций ---
+var locationsScenes: Array = [
+	"res://scenes/main.tscn",       # city
+	"res://scenes/main.tscn",       # forest
+	"res://scenes/main.tscn"        # hell
+]
 
 # --- модификации значений ---
 # игрок
@@ -26,3 +35,7 @@ var aimGamepadDeadZone: float = 0.2
 var enableAnimations: bool = true
 var enableShakeScreen: bool = true
 var forceInputTypeSelect: int = -1
+
+
+func resetLocationData():
+	speedLoc = 100.0

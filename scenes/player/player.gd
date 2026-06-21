@@ -43,6 +43,8 @@ func _ready() -> void:
 	add_to_group("player")
 	
 	aimSprite.visible = false
+	if Global.playerHealth != 0.0:
+		health = Global.playerHealth
 	
 	# применения модификаций
 	health *= Global.multiplierPlayerHealth
@@ -255,6 +257,7 @@ func damage(count: int):
 	if health <= 0: return
 	
 	health -= count
+	Global.playerHealth = health
 	Global.speedLoc = max(Global.speedLoc - (maxHealth - health), 120.0)   # скорость локации упадёт, но не ниже 120
 	
 	if health <= 0: death()
