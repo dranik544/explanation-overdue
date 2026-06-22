@@ -1,9 +1,9 @@
 extends Node2D
 
 
-func _ready():
-	yield(get_tree().create_timer(0.5), "timeout")
-	goToNextLocation()
+#func _ready():
+#	yield(get_tree().create_timer(0.5), "timeout")
+#	goToNextLocation()
 
 func goToNextLocation():
 	var randomLocationNum: int

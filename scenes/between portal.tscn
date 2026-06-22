@@ -1,7 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://sprites/portalscreen1.png" type="Texture" id=1]
 [ext_resource path="res://scenes/between portal.gd" type="Script" id=2]
+[ext_resource path="res://themes/defaultTheme.tres" type="Theme" id=3]
+
+[sub_resource type="Gradient" id=1]
+colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0.784314 )
+
+[sub_resource type="GradientTexture2D" id=2]
+gradient = SubResource( 1 )
+fill = 1
+fill_from = Vector2( 0.5, 0.5 )
 
 [node name="between portal" type="Node2D"]
 script = ExtResource( 2 )
@@ -13,3 +22,88 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 1 )
 stretch_mode = 7
+
+[node name="bg2" type="TextureRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( 2 )
+stretch_mode = 1
+
+[node name="vbox" type="VBoxContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="hboxbuttons" type="HBoxContainer" parent="CanvasLayer/vbox"]
+margin_right = 630.0
+margin_bottom = 310.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button1" type="Button" parent="CanvasLayer/vbox/hboxbuttons"]
+margin_right = 313.0
+margin_bottom = 310.0
+rect_min_size = Vector2( 213, 0 )
+size_flags_horizontal = 3
+theme = ExtResource( 3 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/vbox/hboxbuttons/Button1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+mouse_filter = 2
+theme = ExtResource( 3 )
+bbcode_enabled = true
+bbcode_text = "upgrade1"
+text = "upgrade1"
+scroll_active = false
+
+[node name="Button2" type="Button" parent="CanvasLayer/vbox/hboxbuttons"]
+margin_left = 317.0
+margin_right = 630.0
+margin_bottom = 310.0
+rect_min_size = Vector2( 213, 0 )
+size_flags_horizontal = 3
+theme = ExtResource( 3 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/vbox/hboxbuttons/Button2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+mouse_filter = 2
+theme = ExtResource( 3 )
+bbcode_enabled = true
+bbcode_text = "upgrade2"
+text = "upgrade2"
+scroll_active = false
+
+[node name="reroll" type="Button" parent="CanvasLayer/vbox"]
+margin_top = 314.0
+margin_right = 630.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 213, 0 )
+size_flags_horizontal = 3
+theme = ExtResource( 3 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/vbox/reroll"]
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -37.0
+margin_right = 128.0
+rect_min_size = Vector2( 128, 0 )
+mouse_filter = 2
+theme = ExtResource( 3 )
+bbcode_enabled = true
+bbcode_text = "REROLL"
+text = "REROLL"
+scroll_active = false

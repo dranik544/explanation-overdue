@@ -1,33 +1,14 @@
-[gd_resource type="Theme" load_steps=5 format=2]
+[gd_resource type="Theme" load_steps=3 format=2]
 
-[ext_resource path="res://sprites/theme/button1.png" type="Texture" id=1]
-[ext_resource path="res://fonts/Ithaca.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://fonts/visitor2.otf" type="DynamicFontData" id=1]
 
-[sub_resource type="DynamicFont" id=2]
-extra_spacing_top = -3
-extra_spacing_bottom = -2
-font_data = ExtResource( 2 )
-
-[sub_resource type="StyleBoxTexture" id=1]
-texture = ExtResource( 1 )
-region_rect = Rect2( 0, -1, 24, 25 )
-margin_left = 2.0
-margin_right = 2.0
-margin_top = 3.0
-margin_bottom = 2.0
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 1 )
 
 [resource]
-Button/colors/font_color = Color( 0, 0, 0, 1 )
-Button/colors/font_color_disabled = Color( 0, 0, 0, 0.2 )
-Button/colors/font_color_focus = Color( 0, 0, 0, 1 )
-Button/colors/font_color_hover = Color( 0, 0, 0, 1 )
-Button/colors/font_color_hover_pressed = Color( 0, 0, 0, 1 )
-Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
-Button/colors/icon_color_disabled = Color( 0, 0, 0, 0.4 )
-Button/colors/icon_color_focus = Color( 0, 0, 0, 1 )
-Button/colors/icon_color_hover = Color( 0, 0, 0, 1 )
-Button/colors/icon_color_hover_pressed = Color( 0, 0, 0, 1 )
-Button/colors/icon_color_normal = Color( 0, 0, 0, 1 )
-Button/colors/icon_color_pressed = Color( 0, 0, 0, 1 )
-Button/fonts/font = SubResource( 2 )
-Button/styles/normal = SubResource( 1 )
+default_font = SubResource( 1 )
+RichTextLabel/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+RichTextLabel/constants/shadow_as_outline = 1
+RichTextLabel/constants/shadow_offset_x = 2
+RichTextLabel/constants/shadow_offset_y = 2
