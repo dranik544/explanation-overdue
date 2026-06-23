@@ -11,6 +11,17 @@ var BlockSpawnCount: int = 0   # кол-во созданных блоков
 
 
 func _ready():
+	# модификаторы
+	minInterval *= Global.multiplierBlockPoolMinInterval
+	maxInterval *= Global.multiplierBlockPoolMaxInterval
+	neededBlocksSpawnForSpawnFinalPortal *= Global.multiplierBlockPoolBlocksBeforePortal
+	
+	# получаем всех ДЕТЕЙ
+	pool = get_children()
+	for i in pool:
+		add_child(i.duplicate()) # <- дублируем все группы блоков, чтобы
+								 #    их всегда было в достатке в пуле
+	
 	# получаем всех ДЕТЕЙ
 	pool = get_children()
 	for i in pool:

@@ -13,7 +13,7 @@ var locationsScenes: Array = [
 	"res://scenes/main.tscn"        # hell
 ]
 
-# --- модификации значений ---
+# --- модификаторы ---
 # игрок
 var multiplierPlayerSpeed: float =                    1.0
 var multiplierPlayerJumpVelocity: float =             1.0
@@ -27,6 +27,9 @@ var multiplierProjectileDamage: float =               1.0
 var multiplierSpeedLocAcceleration: float =           1.0
 # блок
 var multiplierBlockHealth: float =                    1.0
+var multiplierBlockPoolBlocksBeforePortal: float =    1.0
+var multiplierBlockPoolMinInterval: float =           1.0
+var multiplierBlockPoolMaxInterval: float =           1.0
 
 # --- настройки ---
 var sensivityMove: float = 1.5
