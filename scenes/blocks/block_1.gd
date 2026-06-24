@@ -29,6 +29,7 @@ func _ready() -> void:
 	# модификаторы
 	health *= Global.multiplierBlockHealth
 	maxHealth = health
+	damagingTypeDamage *= Global.multiplierBlockDamagingDamage
 
 func destroy(damage: int):
 	if health <= 0: return
