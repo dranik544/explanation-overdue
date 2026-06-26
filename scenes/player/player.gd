@@ -166,7 +166,7 @@ func leftTouch(event: InputEvent):
 	elif event is InputEventScreenDrag and touchMoveActive:
 		touchMoveDragOffset.x = (event.position.x - touchMoveStart.x) * Global.sensivityMove
 		
-		if touchMoveStart.y - event.position.y > get_viewport_rect().size.y / 4 / Global.sensivityMove and is_on_floor():
+		if touchMoveStart.y - event.position.y > get_viewport_rect().size.y / 2 / Global.sensivityMove and is_on_floor():
 			velocity.y = jumpVelocity
 			touchMoveStart.y = event.position.y
 

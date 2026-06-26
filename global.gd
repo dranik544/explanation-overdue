@@ -49,12 +49,12 @@ var multiplierBlockPoolMinInterval: float =           1.0
 var multiplierBlockPoolMaxInterval: float =           1.0
 
 # --- настройки ---
-var sensivityMove: float = 1.5
+var sensivityMove: float = 2.5
 var sensivityAim: float = 1.5
 var aimGamepadDeadZone: float = 0.2
 var enableAnimations: bool = true
 var enableShakeScreen: bool = true
-var forceInputTypeSelect: int = -1
+var forceInputTypeSelect: int = 0
 
 
 func resetLocationData():
