@@ -1,14 +1,6 @@
-[gd_resource type="Theme" load_steps=3 format=2]
+[gd_resource type="Theme" load_steps=2 format=2]
 
-[ext_resource path="res://fonts/visitor2.otf" type="DynamicFontData" id=1]
-
-[sub_resource type="DynamicFont" id=1]
-size = 32
-font_data = ExtResource( 1 )
+[ext_resource path="res://themes/normal_font.tres" type="DynamicFont" id=1]
 
 [resource]
-default_font = SubResource( 1 )
-RichTextLabel/colors/font_color_shadow = Color( 0, 0, 0, 1 )
-RichTextLabel/constants/shadow_as_outline = 1
-RichTextLabel/constants/shadow_offset_x = 2
-RichTextLabel/constants/shadow_offset_y = 2
+default_font = ExtResource( 1 )

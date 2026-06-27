@@ -54,7 +54,7 @@ var sensivityAim: float = 1.5
 var aimGamepadDeadZone: float = 0.2
 var enableAnimations: bool = true
 var enableShakeScreen: bool = true
-var forceInputTypeSelect: int = 0
+var forceInputTypeSelect: int = -1
 
 
 func resetLocationData():
@@ -79,3 +79,27 @@ func updateMultipliers(index: int):
 			multiplierProjectileSpeed += 1.0
 			multiplierBlockHealth += 1.0
 			multiplierBlockDamagingDamage += 0.5
+
+func printGlobalMultipliers():
+	print("--- ПРОВЕРКА МОДИФИКАТОРОВ GLOBAL ---")
+	# Игрок
+	print("Global.multiplierPlayerSpeed: ", Global.multiplierPlayerSpeed)
+	print("Global.multiplierPlayerJumpVelocity: ", Global.multiplierPlayerJumpVelocity)
+	print("Global.multiplierPlayerHealth: ", Global.multiplierPlayerHealth)
+	print("Global.multiplierPlayerProjectileTimerWaitTime: ", Global.multiplierPlayerProjectileTimerWaitTime)
+	
+	# Проджектайл
+	print("Global.multiplierProjectileSpeed: ", Global.multiplierProjectileSpeed)
+	print("Global.multiplierProjectileRecoilForce: ", Global.multiplierProjectileRecoilForce)
+	print("Global.multiplierProjectileDamage: ", Global.multiplierProjectileDamage)
+	
+	# Локация
+	print("Global.multiplierSpeedLocAcceleration: ", Global.multiplierSpeedLocAcceleration)
+	
+	# Блок
+	print("Global.multiplierBlockHealth: ", Global.multiplierBlockHealth)
+	print("Global.multiplierBlockDamagingDamage: ", Global.multiplierBlockDamagingDamage)
+	print("Global.multiplierBlockPoolBlocksBeforePortal: ", Global.multiplierBlockPoolBlocksBeforePortal)
+	print("Global.multiplierBlockPoolMinInterval: ", Global.multiplierBlockPoolMinInterval)
+	print("Global.multiplierBlockPoolMaxInterval: ", Global.multiplierBlockPoolMaxInterval)
+	print("-------------------------------------")
