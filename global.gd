@@ -27,6 +27,18 @@ var enhancesData: Array = [
 		"name": "Мощные пулькэ",
 		"desc": "Улучшит снаряды, но блоки станут мощнее"
 	},
+	{   # 3
+		"name": "АНАЛЬНАЯ ПРОБКА",
+		"desc": "ПРОБКА ПРОБЧИТ ВАШ АНАЛ"
+	},
+	{   # 4
+		"name": "ИШаК",
+		"desc": "БЕСПЛАТНЫЙ ОТСОС"
+	},
+	{   # 5
+		"name": "Мопулщ ьныекэ",
+		"desc": "Улу слокинарнстанут чщншитояды,  б моее"
+	},
 ]
 
 # --- модификаторы ---
@@ -68,12 +80,28 @@ func updateMultipliers(index: int):
 			multiplierPlayerSpeed += 0.2
 			multiplierPlayerHealth += 0.2
 			multiplierProjectileRecoilForce -= 0.4
-			multiplierProjectileDamage -= 0.4
+			multiplierProjectileDamage -= 0.2
 		1:
 			multiplierPlayerJumpVelocity += 0.4
 			multiplierPlayerSpeed += 0.4
 			multiplierSpeedLocAcceleration += 1.5
 		2:
+			multiplierProjectileDamage += 0.5
+			multiplierProjectileRecoilForce += 0.2
+			multiplierProjectileSpeed += 1.0
+			multiplierBlockHealth += 1.0
+			multiplierBlockDamagingDamage += 0.5
+		3:
+			multiplierPlayerJumpVelocity += 0.2
+			multiplierPlayerSpeed += 0.2
+			multiplierPlayerHealth += 0.2
+			multiplierProjectileRecoilForce -= 0.4
+			multiplierProjectileDamage -= 0.2
+		4:
+			multiplierPlayerJumpVelocity += 0.4
+			multiplierPlayerSpeed += 0.4
+			multiplierSpeedLocAcceleration += 1.5
+		5:
 			multiplierProjectileDamage += 0.5
 			multiplierProjectileRecoilForce += 0.2
 			multiplierProjectileSpeed += 1.0

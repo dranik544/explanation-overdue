@@ -2,6 +2,7 @@ extends Node2D
 
 onready var button1 = $CanvasLayer/vbox/hboxbuttons/Button1
 onready var button2 = $CanvasLayer/vbox/hboxbuttons/Button2
+onready var buttonReroll = $CanvasLayer/vbox/reroll
 onready var buttonText1 = $CanvasLayer/vbox/hboxbuttons/Button1/RichTextLabel
 onready var buttonText2 = $CanvasLayer/vbox/hboxbuttons/Button2/RichTextLabel
 
@@ -12,6 +13,7 @@ func _ready():
 	
 	button1.connect("pressed", self, "button1pressed")
 	button2.connect("pressed", self, "button2pressed")
+	buttonReroll.connect("pressed", self, "buttonRerollPressed")
 	
 	randomEnhancementButtons()
 	
@@ -29,6 +31,9 @@ func button2pressed():
 	Global.updateMultipliers(btn2index)
 	Global.printGlobalMultipliers()
 	goToNextLocation()
+
+func buttonRerollPressed():
+	randomEnhancementButtons()
 
 
 func randomEnhancementButtons():
