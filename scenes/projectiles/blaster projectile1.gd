@@ -20,9 +20,9 @@ func _ready() -> void:
 	baseScaleSprite = sprite2d.scale
 	
 	# модификаторы
-	speed *= Global.multiplierProjectileSpeed
-	recoilForce *= Global.multiplierProjectileRecoilForce
-	damage *= Global.multiplierProjectileDamage
+	speed *= Global.multipliers["multiplierProjectileSpeed"]
+	recoilForce *= Global.multipliers["multiplierProjectileRecoilForce"]
+	damage *= Global.multipliers["multiplierProjectileDamage"]
 
 func _physics_process(delta):
 	# движение проджектайла по направлению, с учётом скорости и фпс

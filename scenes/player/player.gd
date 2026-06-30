@@ -47,11 +47,11 @@ func _ready() -> void:
 		health = Global.playerHealth
 	
 	# применения модификаций
-	health *= Global.multiplierPlayerHealth
+	health *= Global.multipliers["multiplierPlayerHealth"]
 	maxHealth = health
-	maxSpeedMove *= Global.multiplierPlayerSpeed
-	jumpVelocity *= Global.multiplierPlayerJumpVelocity
-	projectileTimer.wait_time *= Global.multiplierPlayerProjectileTimerWaitTime
+	maxSpeedMove *= Global.multipliers["multiplierPlayerSpeed"]
+	jumpVelocity *= Global.multipliers["multiplierPlayerJumpVelocity"]
+	projectileTimer.wait_time *= Global.multipliers["multiplierPlayerProjectileTimerWaitTime"]
 
 func _physics_process(delta: float) -> void:
 	InputManagement()

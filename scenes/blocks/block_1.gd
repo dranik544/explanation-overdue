@@ -27,9 +27,9 @@ func _ready() -> void:
 	if startedDeactivate: deactivate()
 	
 	# модификаторы
-	health *= Global.multiplierBlockHealth
+	health *= Global.multipliers["multiplierBlockHealth"]
 	maxHealth = health
-	damagingTypeDamage *= Global.multiplierBlockDamagingDamage
+	damagingTypeDamage *= Global.multipliers["multiplierBlockDamagingDamage"]
 
 func destroy(damage: int):
 	if health <= 0: return

@@ -12,9 +12,9 @@ var BlockSpawnCount: int = 0   # кол-во созданных блоков
 
 func _ready():
 	# модификаторы
-	minInterval *= Global.multiplierBlockPoolMinInterval
-	maxInterval *= Global.multiplierBlockPoolMaxInterval
-	neededBlocksSpawnForSpawnFinalPortal *= Global.multiplierBlockPoolBlocksBeforePortal
+	minInterval *= Global.multipliers["multiplierBlockPoolMinInterval"]
+	maxInterval *= Global.multipliers["multiplierBlockPoolMaxInterval"]
+	neededBlocksSpawnForSpawnFinalPortal *= Global.multipliers["multiplierBlockPoolBlocksBeforePortal"]
 	
 	# получаем всех ДЕТЕЙ
 	pool = get_children()

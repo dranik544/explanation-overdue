@@ -13,52 +13,28 @@ var locationsScenes: Array = [
 	"res://scenes/main.tscn"        # hell
 ]
 
-# --- улучшения ---
-var enhancesData: Array = [
-	{   # 0
-		"name": "Мощные сиськэ",
-		"desc": "Улучшит ваше тело, но снаряды станут слабее"
-	},
-	{   # 1
-		"name": "Мощные ношкэ",
-		"desc": "Скорость и прыжки будут прокачаны, но скорость локации станет выше"
-	},
-	{   # 2
-		"name": "Мощные пулькэ",
-		"desc": "Улучшит снаряды, но блоки станут мощнее"
-	},
-	{   # 3
-		"name": "АНАЛЬНАЯ ПРОБКА",
-		"desc": "ПРОБКА ПРОБЧИТ ВАШ АНАЛ"
-	},
-	{   # 4
-		"name": "ИШаК",
-		"desc": "БЕСПЛАТНЫЙ ОТСОС"
-	},
-	{   # 5
-		"name": "Мопулщ ьныекэ",
-		"desc": "Улу слокинарнстанут чщншитояды,  б моее"
-	},
-]
+# --- инвентарь ---
+var inventory: Array = []
+var weapons: Array = []
+var maxWeapons: int = 4
 
 # --- модификаторы ---
-# игрок
-var multiplierPlayerSpeed: float =                    1.0
-var multiplierPlayerJumpVelocity: float =             1.0
-var multiplierPlayerHealth: float =                   1.0
-var multiplierPlayerProjectileTimerWaitTime: float =  1.0
-# проджектайл
-var multiplierProjectileSpeed: float =                1.0
-var multiplierProjectileRecoilForce: float =          1.0
-var multiplierProjectileDamage: float =               1.0
-# локация
-var multiplierSpeedLocAcceleration: float =           1.0
-# блок
-var multiplierBlockHealth: float =                    1.0
-var multiplierBlockDamagingDamage: float =            1.0
-var multiplierBlockPoolBlocksBeforePortal: float =    1.0
-var multiplierBlockPoolMinInterval: float =           1.0
-var multiplierBlockPoolMaxInterval: float =           1.0
+var multipliers: Dictionary = {
+	"multiplierPlayerSpeed":                   1.0,
+	"multiplierPlayerJumpVelocity":            1.0,
+	"multiplierPlayerHealth":                  1.0,
+	"multiplierPlayerProjectileTimerWaitTime": 1.0,
+	"multiplierProjectileSpeed":               1.0,
+	"multiplierProjectileRecoilForce":         1.0,
+	"multiplierProjectileDamage":              1.0,
+	"multiplierSpeedLocAcceleration":          1.0,
+	"multiplierBlockHealth":                   1.0,
+	"multiplierBlockDamagingDamage":           1.0,
+	"multiplierBlockPoolBlocksBeforePortal":   1.0,
+	"multiplierBlockPoolMinInterval":          1.0,
+	"multiplierBlockPoolMaxInterval":          1.0,
+}
+
 
 # --- настройки ---
 var sensivityMove: float = 2.5
@@ -69,65 +45,38 @@ var enableShakeScreen: bool = true
 var forceInputTypeSelect: int = -1
 
 
+func _input(event):
+	if Input.is_action_just_pressed("ESC"):
+		addItemToInventory("poop1")
+
 func resetLocationData():
 	speedLoc = 100.0
 
-# здесь будет список всех улучшений
-func updateMultipliers(index: int):
-	match index:
-		0:
-			multiplierPlayerJumpVelocity += 0.2
-			multiplierPlayerSpeed += 0.2
-			multiplierPlayerHealth += 0.2
-			multiplierProjectileRecoilForce -= 0.4
-			multiplierProjectileDamage -= 0.2
-		1:
-			multiplierPlayerJumpVelocity += 0.4
-			multiplierPlayerSpeed += 0.4
-			multiplierSpeedLocAcceleration += 1.5
-		2:
-			multiplierProjectileDamage += 0.5
-			multiplierProjectileRecoilForce += 0.2
-			multiplierProjectileSpeed += 1.0
-			multiplierBlockHealth += 1.0
-			multiplierBlockDamagingDamage += 0.5
-		3:
-			multiplierPlayerJumpVelocity += 0.2
-			multiplierPlayerSpeed += 0.2
-			multiplierPlayerHealth += 0.2
-			multiplierProjectileRecoilForce -= 0.4
-			multiplierProjectileDamage -= 0.2
-		4:
-			multiplierPlayerJumpVelocity += 0.4
-			multiplierPlayerSpeed += 0.4
-			multiplierSpeedLocAcceleration += 1.5
-		5:
-			multiplierProjectileDamage += 0.5
-			multiplierProjectileRecoilForce += 0.2
-			multiplierProjectileSpeed += 1.0
-			multiplierBlockHealth += 1.0
-			multiplierBlockDamagingDamage += 0.5
+func addItemToInventory(id: String):
+	print(ItemDataBase.ItemData)
+	if !(id in ItemDataBase.ItemData):
+		print("нет такого предмета")
+		return
+	inventory.append(id)
+	calculateMultipliers()
+
+func resetMultiplier():
+	for key in multipliers.keys():
+		multipliers[key] = 1.0
+
+func calculateMultipliers():
+	resetMultiplier()
+	for id in inventory:
+		var d = ItemDataBase.ItemData.get(id)
+		if d and d.has("multipliers"):
+			for key in d.multipliers:
+				if multipliers.has(key):
+					multipliers[key] += d.multipliers[key]
+	
+	printGlobalMultipliers()
 
 func printGlobalMultipliers():
 	print("--- ПРОВЕРКА МОДИФИКАТОРОВ GLOBAL ---")
-	# Игрок
-	print("Global.multiplierPlayerSpeed: ", Global.multiplierPlayerSpeed)
-	print("Global.multiplierPlayerJumpVelocity: ", Global.multiplierPlayerJumpVelocity)
-	print("Global.multiplierPlayerHealth: ", Global.multiplierPlayerHealth)
-	print("Global.multiplierPlayerProjectileTimerWaitTime: ", Global.multiplierPlayerProjectileTimerWaitTime)
-	
-	# Проджектайл
-	print("Global.multiplierProjectileSpeed: ", Global.multiplierProjectileSpeed)
-	print("Global.multiplierProjectileRecoilForce: ", Global.multiplierProjectileRecoilForce)
-	print("Global.multiplierProjectileDamage: ", Global.multiplierProjectileDamage)
-	
-	# Локация
-	print("Global.multiplierSpeedLocAcceleration: ", Global.multiplierSpeedLocAcceleration)
-	
-	# Блок
-	print("Global.multiplierBlockHealth: ", Global.multiplierBlockHealth)
-	print("Global.multiplierBlockDamagingDamage: ", Global.multiplierBlockDamagingDamage)
-	print("Global.multiplierBlockPoolBlocksBeforePortal: ", Global.multiplierBlockPoolBlocksBeforePortal)
-	print("Global.multiplierBlockPoolMinInterval: ", Global.multiplierBlockPoolMinInterval)
-	print("Global.multiplierBlockPoolMaxInterval: ", Global.multiplierBlockPoolMaxInterval)
+	for key in multipliers:
+		print("Global." + key + ": ", multipliers[key])
 	print("-------------------------------------")
